@@ -1,4 +1,5 @@
-# Sufe
-sufe assignments
-hello! 
-THIS IS MY FIRST GITHUB PROJECT
+### Sufe
+
+*-THIS IS MY FIRST GITHUB PROJECT-*
+
+HELLO!
