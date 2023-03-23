@@ -42,4 +42,4 @@ Update: This is where the journey begins, with CS61A and more.
 
 
 
-*今でもあなたは私の光。*
+***今でもあなたは私の光。***
