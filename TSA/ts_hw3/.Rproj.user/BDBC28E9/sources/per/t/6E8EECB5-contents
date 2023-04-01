@@ -119,15 +119,102 @@ plot(Zt, type = 'o', main = "", xlab = "t", ylab = expression(Z[t]))
 
 **(a) 求ϕ 和θ 的矩估计；**
 
+```{r 3a,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+rho1 <- acf(Zt,plot=FALSE)$acf[2]
+rho2 <- acf(Zt,plot=FALSE)$acf[3]
+# phi MME:
+phi_hat <- rho2/rho1
+cat("phi's MME: ",phi_hat,"\n")
+
+# solve the eqn to get theta_hat MME, note that only keep the reversable solution.
+func <- function(theta) rho1 - (1-theta*phi_hat)*(phi_hat-theta)/(1-2*theta*phi_hat+theta*theta)
+theta_hat <- uniroot(func,c(0,1),tol=0.00001)$root
+cat("theta's MME:",theta_hat)
+```
+MME估计结果如上所示
+
 **(b) 求ϕ 和θ 的条件最小二乘估计，并且与(a) 中的结果进行比较；**
 ```{r 3b,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
 arima(Zt,order=c(1,0,1),method='CSS')
 ```
+本次CSS的估计结果，ϕ_hat = 0.6145，θ_hat = 0.2544；与真实值ϕ = 0.7，θ = 0.4相比，MME的估计效果此处要优于CSS.
+
 **(c) 求ϕ 和θ 的极大似然估计，并且与(a) 和(b) 中的结果进行比较；**
 
 ```{r 3c,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
 arima(Zt,order=c(1,0,1),method='ML')
 ```
+本次MLE的估计结果，ϕ_hat = 0.6194，θ = 0.2628；与真实值ϕ = 0.7，θ = 0.4相比，MME的估计效果此处要优于MLE, MLE与CSS的估计效果近似相同.
 
 **(d) 设定随机种子数为5，选取相同参数和样本量产生新的模拟序列，使用新的模拟序
 列重复(a)、(b) 和(c)，并将两次模拟结果进行比较。**
+
+```{r 3d,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+# Z_t=0.7Z_t-1 + a_t - 0.4a_t-1
+#library(TSA)
+set.seed(5)
+offset <- 300
+n <- 72
+theta <- 0.4
+phi <- 0.7
+at <- rnorm(n+offset)
+Zt <- NULL
+Zt[1] <- at[1]-theta*0
+for(i in 2:(n+offset)){
+  Zt[i] <- at[i]-theta*at[i-1]+phi*Zt[i-1]
+}
+Zt <- Zt[(offset+1):(offset+n)]
+plot(Zt, type = 'o', main = "", xlab = "t", ylab = expression(Z[t]))
+rho1 <- acf(Zt,plot=FALSE)$acf[2]
+rho2 <- acf(Zt,plot=FALSE)$acf[3]
+# phi MME:
+phi_hat <- rho2/rho1
+cat("phi's MME: ",phi_hat,"\n")
+
+# solve the eqn to get theta_hat MME, note that only keep the reversable solution.
+func <- function(theta) rho1 - (1-theta*phi_hat)*(phi_hat-theta)/(1-2*theta*phi_hat+theta*theta)
+theta_hat <- uniroot(func,c(0,1),tol=0.00001)$root
+cat("theta's MME:",theta_hat)
+
+#CSS
+arima(Zt,order=c(1,0,1),method='CSS')
+#MLE
+arima(Zt,order=c(1,0,1),method='ML')
+```
+输出结果如上所示，从上至下依次为参数的MME，CSS与MLE。在本次模拟中，MME的估计效果依然优于MLE或CSS，但整体效果普遍差于第一次估计。
+
+
+## 第四题
+
+**名为robot 的数据文件中包含了一个来自工业机器人的时间序列。机器人需要完成一系
+列动作，并以英寸为单位记录与理想终点的距离，重复此过程324 次得到该时间序列。**
+
+**(a) 对robot 序列建立AR(1) 模型，并估计其参数；**
+```{r 4a1,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+#library(TSA)
+data("robot")
+plot(robot,type='o')
+arima(robot,order=c(1,0,0),method='ML')
+```
+通过建立AR(1)模型并根据ML进行参数估计，估计结果：
+
+$$\hat\phi = 0.3085,~s.e.(\hat\phi)=0.0529\\ \hat\mu=0.0015,~s.e.(\hat\mu)=0.0002$$
+并且由上述估计结果可知，截距项与phi均在5%的水平下显著不为零.
+
+**(b) 对robot 序列建立IMA(1,1) 模型，并估计其参数；**
+
+```{r 4a1,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+arima(robot,order=c(0,1,1),method='ML')
+```
+通过建立IMA(1,1)模型并根据ML进行参数估计，估计结果：
+
+$$\hat\theta = 0.8659,~s.e.(\hat\theta)=0.0362$$
+并且由上述估计结果可知，theta均在5%的水平下显著不为零.
+
+**(c) 应用AIC 准则比较(a) 和(b) 的结果；**
+
+参考两次模型的输出结果， aic_1 = -2947.08，aic_2 = -2959.9，对比可知两模型的AIC较为接近，相对而言IMA模型略小，在该信息准则下表现效果略优于AR模型.
+
+**(d) 通过Ljung-Box 检验，对robot 序列拟合的AR(1) 模型和IMA(1,1) 模型进行诊断，
+并比较两个模型的诊断结果(设定最大滞后阶数为12)。**
+
