@@ -1,22 +1,12 @@
 ### Sufe
 
-*-THIS IS MY FIRST GITHUB PROJECT-*
+Hello!
 
-HELLO!
+This rep has been shifted for lecture uses. Anything more about csdiy, you may check my pinned rep.
 
+In this rep, it will mainly be used to sync my lect assignments and so on. 
 
-
-**[Mar12 2023]**
-
-Update: This is where the journey begins, with CS61A and more.
-
-
-
-**[Mar23 2023]**
-
-*Note: Some of the materials' copyright is owned by the lectureres or any other publishers. This rep is intended for study use only. Please contact me if there is any copyright infringement.* 
-
-
+Maybe there will also be a website storing my lecture notes, but let's just wait and see.
 
 
 
