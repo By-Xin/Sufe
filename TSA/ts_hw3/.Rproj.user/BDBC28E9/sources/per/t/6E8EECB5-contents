@@ -190,11 +190,12 @@ arima(Zt,order=c(1,0,1),method='ML')
 列动作，并以英寸为单位记录与理想终点的距离，重复此过程324 次得到该时间序列。**
 
 **(a) 对robot 序列建立AR(1) 模型，并估计其参数；**
-```{r 4a1,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+```{r 4a,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
 #library(TSA)
 data("robot")
 plot(robot,type='o')
-arima(robot,order=c(1,0,0),method='ML')
+robot.ar <- arima(robot,order=c(1,0,0),method='ML')
+robot.ar
 ```
 通过建立AR(1)模型并根据ML进行参数估计，估计结果：
 
@@ -203,8 +204,9 @@ $$\hat\phi = 0.3085,~s.e.(\hat\phi)=0.0529\\ \hat\mu=0.0015,~s.e.(\hat\mu)=0.000
 
 **(b) 对robot 序列建立IMA(1,1) 模型，并估计其参数；**
 
-```{r 4a1,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
-arima(robot,order=c(0,1,1),method='ML')
+```{r 4b,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+robot.ima <- arima(robot,order=c(0,1,1),method='ML')
+robot.ima
 ```
 通过建立IMA(1,1)模型并根据ML进行参数估计，估计结果：
 
@@ -217,4 +219,62 @@ $$\hat\theta = 0.8659,~s.e.(\hat\theta)=0.0362$$
 
 **(d) 通过Ljung-Box 检验，对robot 序列拟合的AR(1) 模型和IMA(1,1) 模型进行诊断，
 并比较两个模型的诊断结果(设定最大滞后阶数为12)。**
+
+```{r 4d,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+Box.test(rstandard(robot.ar),lag=6,type="Ljung-Box",fitdf=1)
+Box.test(rstandard(robot.ar),lag=12,type="Ljung-Box",fitdf=1)
+Box.test(rstandard(robot.ar),lag=18,type="Ljung-Box",fitdf=1)
+
+Box.test(rstandard(robot.ima),lag=6,type="Ljung-Box",fitdf=1)
+Box.test(rstandard(robot.ima),lag=12,type="Ljung-Box",fitdf=1)
+Box.test(rstandard(robot.ima),lag=18,type="Ljung-Box",fitdf=1)
+
+```
+
+根据上述输出内容可知，AR(1)的Ljung—Box检验在5%的水平下需要拒绝原假设，说明拟合效果较差；IMA(1)的Ljung-Box检验结果p值均大于10%，且大多数保证了在20%水平之上，可以认为拟合效果比较充分。
+
+## 第五题
+
+**对文件名为 hare 的序列建立AR(3)模型，并运用极大似然估计方法拟合模型。**
+
+**(a) 绘制残差序列的样本ACF 图(设定最大滞后阶数为10)，并评述残差序列的相关性；**
+
+```{r 5a,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+#library(TSA)
+data("hare")
+plot(hare,type='o')
+hare.ar3 <- arima(hare,order=c(3,0,0),method='ML')
+print("AR(3) MLE Model:")
+hare.ar3
+hare.ar3.resid <- hare.ar3$residuals
+acf(hare.ar3.resid,lag.max = 10,main="")
+```
+模型拟合结果如上所示。残差序列样本ACF图如上图所示。由于前10阶的ACf均落在区间范围内，故其相关性统计意义上不显著，可以认为残差近似不相关。
+
+**(b) 设定Ljung-Box 检验的最大滞后阶数为9，计算Ljung-Box 统计量，并给出检验结
+论；**
+
+```{r 5b,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+Box.test(rstandard(hare.ar3),lag=3,type="Ljung-Box",fitdf=1)
+Box.test(rstandard(hare.ar3),lag=6,type="Ljung-Box",fitdf=1)
+Box.test(rstandard(hare.ar3),lag=9,type="Ljung-Box",fitdf=1)
+
+```
+Ljung-Box 的检验结果如上图所示，由统计量可知其p值均显著大于20%，无法拒绝原假设，说明模型拟合充分。
+
+**(c) 展示残差的正态Q-Q 图，并对图形进行评论；**
+
+```{r 5c,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+qqnorm(hare.ar3$residuals, main='Q-Q plot'); qqline(hare.ar3$residuals)
+```
+由该Q-Q图可知大多数数据都落在基准线上，整体散点可以近似认为排列成一条直线，说明残差数据的正态性较好。
+
+**(d) 请用Shapiro-Wilk 检验考察残差序列的正态性。
+
+```{r 5d,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+shapiro.test(hare.ar3$residuals)
+```
+
+该检验的输出结果如上所示，其p值显著大于5%，说明无法拒绝原假设，即可以认为残差序列是服从正态分布的。
+
 
