@@ -1,0 +1,4 @@
+"0","#install.packages(""TSA"")"
+"0","data(""winnebago"")"
+"0","plot(winnebago,type='o')"
+"0",""
