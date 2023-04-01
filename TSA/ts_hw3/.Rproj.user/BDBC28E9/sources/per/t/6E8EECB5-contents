@@ -1,0 +1,133 @@
+---
+title: "第三次作业"
+author: "辛柏嬴 2020111753 20金统2班"
+date: "2023-03-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 第一题
+
+**长度为n = 100 的时间序列{Zt}，已知r1 = 0.615、r2 = 0.505、r3 = 0.364，样本均值
+为1.999，样本方差为1.701。为该序列识别一个AR(2) 模型，请计算模型参数的矩估计。**
+
+
+## 第二题
+
+**使用R 软件模拟样本量为n = 36 的零均值MA(1) 序列，其中θ = −0.6，白噪声
+at ∼ N(0, 1)，且模拟设定随机种子数为1。**
+
+```{r 2,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+# Z_t = a_t + 0.6a_t-1
+#library(TSA)
+set.seed(1)
+offset <- 300
+n <- 36
+theta <- -0.6
+at <- rnorm(n+offset)
+Zt <- NULL
+Zt[1] <- at[1]-theta*0
+for(i in 2:(n+offset)){
+  Zt[i] <- at[i]-theta*at[i-1]
+}
+Zt <- Zt[(offset+1):(offset+n)]
+plot(Zt, type = 'o', main = "", xlab = "t", ylab = expression(Z[t]))
+
+```
+
+**(a) 求θ 的矩估计；**
+
+```{r 2a,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+ma1.mme<-function(x){
+r=TSA::acf(x,plot=F)$acf[1];
+if (abs(r)<0.5) return((-1+sqrt(1-4*r^2))/(2*r))
+else return(NA)}
+mme <- ma1.mme(Zt)
+cat(paste("MME result:",mme,""))
+```
+
+
+**(b) 求θ 的条件最小二乘估计，并且与(a) 中的结果进行比较；**
+
+```{r 2b,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+arima(Zt, order = c(0,0,1), method = 'CSS')$coef[1]
+```
+由代码可知，条件最小二乘的计算结果是-0.5892，要明显优于矩估计。
+
+
+**(c) 求θ 的极大似然估计，并且与(a) 和(b) 中的结果进行比较；**
+```{r 2c,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+arima(Zt, order = c(0,0,1), method = 'ML')$coef[1]
+```
+由代码可知，MLE的估计结果为-0.7224.因此矩估计的效果最差，误差最大；条件最小二乘的估计效果最好，误差最小。
+
+
+**(d) 设定随机种子数为5，选取相同参数和样本量产生新的模拟序列，使用新的模拟序
+列重复(a)、(b) 和(c)，并将两次模拟结果进行比较。**
+
+```{r 2d,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+set.seed(5)
+offset <- 300
+n <- 36
+theta <- -0.6
+et <- rnorm(n+offset)
+Yt <- NULL
+Yt[1] <- et[1]-theta*0
+for(i in 2:(n+offset)){
+  Yt[i] <- et[i]-theta*et[i-1]
+}
+Yt <- Yt[(offset+1):(offset+n)]
+mme <- ma1.mme(Yt)
+print("MME result:")
+mme
+print("CSS result:")
+arima(Yt, order = c(0,0,1), method = 'CSS')
+print("MLE result:")
+arima(Yt, order = c(0,0,1), method = 'ML')
+
+```
+由本次模拟可知（具体输出结果见上），矩估计的估计效果依然是最差的，MLE和CSS的估计效果大致相似，其中CSS在本题中效果略好。此外，MLE和CSS的估计结果由其s.e.可知，真实值均落在其95%置信区间内。
+
+
+## 第三题
+
+**使用R 软件模拟样本量为n = 72 的零均值ARMA(1,1) 序列，其中，ϕ = 0.7，θ = 0.4，
+白噪声at ∼ N(0, 1)，且模拟设定随机种子数为1。**
+
+```{r 3,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+# Z_t=0.7Z_t-1 + a_t - 0.4a_t-1
+#library(TSA)
+set.seed(1)
+offset <- 300
+n <- 72
+theta <- 0.4
+phi <- 0.7
+at <- rnorm(n+offset)
+Zt <- NULL
+Zt[1] <- at[1]-theta*0
+for(i in 2:(n+offset)){
+  Zt[i] <- at[i]-theta*at[i-1]+phi*Zt[i-1]
+}
+Zt <- Zt[(offset+1):(offset+n)]
+plot(Zt, type = 'o', main = "", xlab = "t", ylab = expression(Z[t]))
+
+```
+
+**(a) 求ϕ 和θ 的矩估计；**
+
+**(b) 求ϕ 和θ 的条件最小二乘估计，并且与(a) 中的结果进行比较；**
+```{r 3b,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+arima(Zt,order=c(1,0,1),method='CSS')
+```
+**(c) 求ϕ 和θ 的极大似然估计，并且与(a) 和(b) 中的结果进行比较；**
+
+```{r 3c,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
+arima(Zt,order=c(1,0,1),method='ML')
+```
+
+**(d) 设定随机种子数为5，选取相同参数和样本量产生新的模拟序列，使用新的模拟序
+列重复(a)、(b) 和(c)，并将两次模拟结果进行比较。**
