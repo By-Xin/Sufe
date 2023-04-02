@@ -1,7 +1,0 @@
-"0","ma1.mme<-function(x){"
-"0","r=TSA::acf(x,plot=F)$acf[1];"
-"0","if (abs(r)<0.5) return((-1+sqrt(1-4*r^2))/(2*r))"
-"0","else return(NA)}"
-"0","mme <- ma1.mme(Zt)"
-"0","cat(paste(""MME result:"",mme,""""))"
-"1","MME result: -0.417855739742642 "
