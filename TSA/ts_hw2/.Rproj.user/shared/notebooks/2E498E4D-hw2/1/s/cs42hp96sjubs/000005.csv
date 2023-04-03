@@ -1,2 +1,0 @@
-"0","log_winnebago <- log(winnebago)"
-"0","plot(log_winnebago, type='o', ylab=""log winnebago"")"

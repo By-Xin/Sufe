@@ -1,3 +1,0 @@
-"0","boxcox_JJ <- 5*(JJ^0.2-1)"
-"0","diff_boxcox_JJ <- diff(boxcox_JJ)"
-"0","plot(diff_boxcox_JJ,type='o',ylab='log(JJ) ( with lambda=0.2 )',xlab='Time')"

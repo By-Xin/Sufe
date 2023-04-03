@@ -1,1 +1,0 @@
-"0","lambda_opt <- boxcox$lambda[which.max(boxcox$loglike)]"

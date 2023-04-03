@@ -1,2 +1,0 @@
-"0","boxcox_JJ <- 5*(JJ^0.2-1)"
-"0","plot(boxcox_JJ,type='o',ylab='JJ ( with lambda=0.2 )')"
