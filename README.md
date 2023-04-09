@@ -18,9 +18,10 @@ Here are some lecture notes in this rep, and more is on the way!
 * **SAS** _[status: course finised, notes gathering]_
 * **Time Series Analysis (TSA)** _[status: course unfinished, more to come, just wait and see]_
 
+---------------------------------------------------
 **ATTENTION!**
 
-Do not forget to go to *Wiki* to find out more!
+**Do not forget to go to *Wiki* to find out more!**
 
 
 
