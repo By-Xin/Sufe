@@ -9,6 +9,8 @@ In this rep, it will mainly be used to sync my lect assignments and so on.
 Maybe there will also be a website storing my lecture notes, but let's just wait and see.
 
 
+---------------------------------------------------
+
 Here are some lecture notes in this rep, and more is on the way!
 
 **MENU**
