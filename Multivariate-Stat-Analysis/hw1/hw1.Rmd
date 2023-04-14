@@ -1,0 +1,213 @@
+---
+title: "多元统计分析作业1"
+author: "辛柏嬴 2020111753"
+date: "2023-03-10"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### **1) 随机生成一个5维多元正态分布$X=（X1,X2,X3,X4,X5）$，其中：均值向量：$c(1,2,3,4,5)$; 协方差矩阵：$\sigma(i,j) = 0.7^{|i-j|}$**
+
+解：思路如下
+
+首先生成$Z\sim N(0,I)$, 通过Cholesky分解求出矩阵$A$使得$A Var(Z)A^T = \sigma(i,j) = 0.7^{|i-j|}$,设置向量$\mu$使得$AZ+\mu=(1,2,3,4,5)^T$, 最终令 $X = AZ+\mu$ 即为所求
+
+*引理【Cholesky分解】：对于一个正定矩阵$A\in \mathbb{R}^{n\times n}$，存在一个对角元全为正数的下三角矩阵$L\in \mathbb{R}^{n\times n}$使得$A=LL^T$成立.*
+```{r q1.1,tidy=TRUE}
+
+set.seed(123) #生成随机数种子
+Z <- rnorm(5,0,1) #初始化5*1的标准正态分布向量
+sigma <- matrix(0,5,5) #sigma是协方差矩阵，这里首先进行初始化
+for (i in 0:5){
+  for (j in 0:5){
+    sigma[i,j] <- 0.7^(abs(i-j)) #得到sigma矩阵
+  }
+}
+A <- chol(sigma) #Cholesky分解
+mu <- c(1,2,3,4,5) #设置均值
+X <- A%*%Z+mu #X = AX+\mu
+print(X)
+
+```
+
+此外，还可以通过调用MASS包直接生成：
+```{r q1.2, warning=FALSE,tidy=TRUE}
+# install.packages("MASS")
+library(MASS)
+X_mass <- mvrnorm(1,mu,sigma) #通过mvrnorm可以直接生成
+print(X_mass)
+
+```
+
+
+
+### **2）对上述正态分布的协方差矩阵：**
+
+#### **a）进行谱分解、奇异值分解**
+
+```{r 2.asd, results='hold',tidy=TRUE}
+#谱分解
+eig <- eigen(sigma) #求sigma的特征值及对应特征向量
+V <- eig$vectors #V是特征向量 （组成的矩阵）
+lam <- eig$values #lam是特征值（组成的向量）
+#输出谱分解结果
+print("V:")
+print(V)
+print("lambda:")
+print(lam)
+print("V inverse:")
+print(solve(V))
+```
+故谱分解：$\Sigma=V\Lambda V^{-1}$，具体系数见上方输出。
+
+
+```{r 2.asvd, results='hold',tidy=TRUE}
+#奇异值分解
+svd <- svd(sigma)
+print(svd)
+print("奇异值分解：sigma = U %*% D %*% transpose(V)") #sigma = UDV^{T}
+```
+
+故奇异值分解：$\Sigma=UDV^T$,具体系数见上方输出。
+
+#### **b）求其特征值、特征向量**
+
+```{r 2.b, results='hold',tidy=TRUE}
+eigen(sigma)
+```
+见上方输出，其中values项为特征值，vectors矩阵的每一列为相应特征值对应的特征向量。
+
+### **3)	随机生成一个5维满秩的方阵A， 求Y=AX的分布**
+
+首先可知$Y$服从正态分布，下求解具体系数
+```{r 3, results='hold',tidy=TRUE,warning=FALSE}
+A <- matrix(rnorm(25),nrow=5,ncol=5) #随机生成矩阵
+qr(A)$rank #这里检验是否是满秩的(rank=5)
+Y <- A%*%X #按照要求生成Y
+print(Y)
+#下面计算理论值：
+mu_Y <- A%*%mu
+var_Y <- A%*%sigma%*%t(A)
+print("Y分布均值")
+print(mu_Y)
+print("Y协方差矩阵")
+print(var_Y)
+```
+随机向量Y的取值如上面输出所示，其服从正态分布，具体均值、方差输出见上。
+
+### **4) 求给定（X3,X4,X5）时 （X1, X2）的条件分布**
+
+对$X$按照题设进行分块，记为$X=(x_1;x_2)^T$，相应的其均值为$\mu=(\mu_1;\mu_2)^T$，
+其协方差矩阵记为$\Sigma=(\Sigma_{1,1}\Sigma_{1,2};\Sigma_{2,1}\Sigma_{2,2})$
+
+```{r 4, results='hold',warning=FALSE,tidy=TRUE}
+#分块后的协方差矩阵
+sig11 <- sigma[1:2,1:2]
+sig12 <- sigma[1:2,3:5]
+sig21 <- sigma[3:5,1:2]
+sig22 <- sigma[3:5,3:5]
+
+#由条件期望公式可以计算：
+k <- sig12%*%solve(sig22)
+mu1 <- c(1,2)
+mu2 <- c(3,4,5)
+print("mu_1.2=mu1+sig12 inv(sig22) (x2-mu2)，其中：")
+print("mu1")
+print(mu1)
+print("sig12 inv(sig22):")
+print(k)
+print("mu2")
+print(mu2)
+
+
+#由条件方差公式可以计算：
+sig11_2 <- sig11-sig12%*%solve(sig22)%*%sig21
+print("sig11_2")
+print(sig11_2)
+```
+
+条件分布仍是正态分布，其均值$\mu_{1.2}=\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)$，
+协方差矩阵$\Sigma_{11.2}=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}$
+其具体取值由于没有给出具体$x$的取值，故无法进行进一步整理，算式中其余各元素取值见上方输出。
+
+
+### **5)	求Y1 与 （Y2,Y3,Y4,Y5）的复相关系数**
+
+复相关系数计算：$\rho_{y\cdot x}=\sqrt{\rho_{xy}^\prime R_{xx}^{-1}\rho_{xy}}$
+
+```{r 5, results='hold',warning=FALSE,tidy=TRUE}
+# 为了方便计算，这里按照规定分布生成具有100行观测的Y
+set.seed(123) #设置种子
+Y_expand <- mvrnorm(n=100,mu_Y,var_Y)
+R <- cor(Y_expand) # R是Y的相关系数矩阵
+r_xy <- R[1,2:5] #提取分块矩阵
+R_xx <- R[2:5,2:5] #提取分块矩阵元素  
+rho_y.x <- sqrt(t(r_xy)%*%solve(R_xx)%*%r_xy) #根据复相关系数公式计算
+print(rho_y.x)
+```
+复相关系数计算结果如上所示。
+
+### **6)	求（Y2,Y3,Y4,Y5）对（Y1）线性回归的R2，并对比5）中求的复相关系数**
+
+```{r 6, results='hold',warning=FALSE,tidy=TRUE}
+#提取各Y列向量
+Y1 <- Y_expand[,1]
+Y2 <- Y_expand[,2]
+Y3 <- Y_expand[,3]
+Y4 <- Y_expand[,4]
+Y5 <- Y_expand[,5]
+#线性回归
+lm <- lm(Y1~Y2+Y3+Y4+Y5) #设置回归模型
+summary(lm) #展示回归报告
+```
+由上方报告可见，在回归分析中的$R^2$为报告输出倒数第二行的 Multiple R-squared 项，其数值要略小于其复相关系数，但较为接近。
+
+### **7)	求给定（Y3,Y4,Y5）时 （Y1, Y2）的偏相关系数矩阵，并与（Y1，Y2）的相关系数矩阵进行对比**
+
+由公式：$\Sigma_{11\cdot2}=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}$可求片协方差矩阵.
+再由$\rho_{ij\cdot k+1,...,p}=\frac{\sigma_{ij\cdot k+1,...,p}}{\sqrt{\sigma_{ii\cdot k+1,...,p}\sigma_{jj\cdot k+1,...,p}}}$ 即可求得偏相关系数
+
+```{r 7,results='hold',warning=FALSE,tidy=TRUE}
+Sig_Y_e <- cov(Y_expand) #求出协方差矩阵
+#提取各分块
+Sig_Y11 <- Sig_Y_e[1:2,1:2]
+Sig_Y12 <- Sig_Y_e[1:2,3:5]
+Sig_Y21 <- Sig_Y_e[3:5,1:2]
+Sig_Y22 <- Sig_Y_e[3:5,3:5]
+#根据公式计算偏相关系数矩阵：
+Sig_Y_11.2 <- Sig_Y11-Sig_Y12%*%solve(Sig_Y22)%*%Sig_Y21 #偏协方差
+diag_Y_11.2 <- sqrt(diag(Sig_Y_11.2)) #得到对角线上的分量标准差
+sd_Y_11.2 <- matrix(c(diag_Y_11.2[1]*diag_Y_11.2[1],diag_Y_11.2[1]*diag_Y_11.2[2],diag_Y_11.2[2]*diag_Y_11.2[1],diag_Y_11.2[2]*diag_Y_11.2[2]),2,2) #初始化相关系数公式中的分母部分
+corr_Y_11.2 <- Sig_Y_11.2 / sd_Y_11.2 # rho = cov(x,y)/sqrt(var(x)*var(y))
+#计算相关系数矩阵：
+corr_Y_12 <- cor(Y_expand[,1:2])
+#输出结果
+print("偏相关系数矩阵：")
+print(corr_Y_11.2)
+print("相关系数矩阵：")
+print(corr_Y_12)
+
+```
+
+
+### **8)	基于1）的总体分布，随机产生一组样本容量为100的样本，a)计算样本均值、样本协方差矩阵；b)验证样本协方差阵的正定性**
+
+```{r 8,results='hold',warning=FALSE,tidy=TRUE}
+sample <- mvrnorm(100,mu,sigma) #生成样本
+sample_mean <- mean(sample) #计算样本均值
+sample_cov <- cov(sample) #计算样本方差
+sample_cov_eign <- eigen(sample_cov) #计算样本协方差矩阵特征值
+print("样本均值：")
+print(sample_mean)
+print("样本协方差：")
+print(sample_cov)
+print("样本协方差矩阵特征值：")
+print(sample_cov_eign)
+```
+样本的均值、协方差矩阵如图所示。由正定矩阵的性质：对于$n$阶实值对称矩阵$A$，$A$是正定矩阵等价于$A$的所有特征值均为正。该命题再上述输出中得到数值验证。

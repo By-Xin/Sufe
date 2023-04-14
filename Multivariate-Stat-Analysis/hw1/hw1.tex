@@ -1,0 +1,530 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={多元统计分析作业1},
+  pdfauthor={辛柏嬴 2020111753},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{多元统计分析作业1}
+\author{辛柏嬴 2020111753}
+\date{2023-03-10}
+
+\begin{document}
+\maketitle
+
+\hypertarget{ux968fux673aux751fux6210ux4e00ux4e2a5ux7ef4ux591aux5143ux6b63ux6001ux5206ux5e03xx1x2x3x4x5ux5176ux4e2dux5747ux503cux5411ux91cfc12345-ux534fux65b9ux5deeux77e9ux9635sigmaij-0.7i-j}{%
+\subsubsection{\texorpdfstring{\textbf{1)
+随机生成一个5维多元正态分布\(X=（X1,X2,X3,X4,X5）\)，其中：均值向量：\(c(1,2,3,4,5)\);
+协方差矩阵：\(\sigma(i,j) = 0.7^{|i-j|}\)}}{1) 随机生成一个5维多元正态分布X=（X1,X2,X3,X4,X5），其中：均值向量：c(1,2,3,4,5); 协方差矩阵：\textbackslash sigma(i,j) = 0.7\^{}\{\textbar i-j\textbar\}}}\label{ux968fux673aux751fux6210ux4e00ux4e2a5ux7ef4ux591aux5143ux6b63ux6001ux5206ux5e03xx1x2x3x4x5ux5176ux4e2dux5747ux503cux5411ux91cfc12345-ux534fux65b9ux5deeux77e9ux9635sigmaij-0.7i-j}}
+
+解：思路如下
+
+首先生成\(Z\sim N(0,I)\),
+通过Cholesky分解求出矩阵\(A\)使得\(A Var(Z)A^T = \sigma(i,j) = 0.7^{|i-j|}\),设置向量\(\mu\)使得\(AZ+\mu=(1,2,3,4,5)^T\),
+最终令 \(X = AZ+\mu\) 即为所求
+
+\emph{引理【Cholesky分解】：对于一个正定矩阵\(A\in \mathbb{R}^{n\times n}\)，存在一个对角元全为正数的下三角矩阵\(L\in \mathbb{R}^{n\times n}\)使得\(A=LL^T\)成立.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{) }\CommentTok{\#生成随机数种子}
+\NormalTok{Z }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{) }\CommentTok{\#初始化5*1的标准正态分布向量}
+\NormalTok{sigma }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{) }\CommentTok{\#sigma是协方差矩阵，这里首先进行初始化}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\DecValTok{5}\NormalTok{)\{}
+  \ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{0}\SpecialCharTok{:}\DecValTok{5}\NormalTok{)\{}
+\NormalTok{    sigma[i,j] }\OtherTok{\textless{}{-}} \FloatTok{0.7}\SpecialCharTok{\^{}}\NormalTok{(}\FunctionTok{abs}\NormalTok{(i}\SpecialCharTok{{-}}\NormalTok{j)) }\CommentTok{\#得到sigma矩阵}
+\NormalTok{  \}}
+\NormalTok{\}}
+\NormalTok{A }\OtherTok{\textless{}{-}} \FunctionTok{chol}\NormalTok{(sigma) }\CommentTok{\#Cholesky分解}
+\NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{) }\CommentTok{\#设置均值}
+\NormalTok{X }\OtherTok{\textless{}{-}}\NormalTok{ A}\SpecialCharTok{\%*\%}\NormalTok{Z}\SpecialCharTok{+}\NormalTok{mu }\CommentTok{\#X = AX+\textbackslash{}mu}
+\FunctionTok{print}\NormalTok{(X)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          [,1]
+## [1,] 1.097394
+## [2,] 2.671161
+## [3,] 4.193629
+## [4,] 4.114984
+## [5,] 5.092330
+\end{verbatim}
+
+此外，还可以通过调用MASS包直接生成：
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install.packages("MASS")}
+\FunctionTok{library}\NormalTok{(MASS)}
+\NormalTok{X\_mass }\OtherTok{\textless{}{-}} \FunctionTok{mvrnorm}\NormalTok{(}\DecValTok{1}\NormalTok{,mu,sigma) }\CommentTok{\#通过mvrnorm可以直接生成}
+\FunctionTok{print}\NormalTok{(X\_mass)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6312591 0.5540929 0.8719170 2.5758327 3.8113588
+\end{verbatim}
+
+\hypertarget{ux5bf9ux4e0aux8ff0ux6b63ux6001ux5206ux5e03ux7684ux534fux65b9ux5deeux77e9ux9635}{%
+\subsubsection{\texorpdfstring{\textbf{2）对上述正态分布的协方差矩阵：}}{2）对上述正态分布的协方差矩阵：}}\label{ux5bf9ux4e0aux8ff0ux6b63ux6001ux5206ux5e03ux7684ux534fux65b9ux5deeux77e9ux9635}}
+
+\hypertarget{aux8fdbux884cux8c31ux5206ux89e3ux5947ux5f02ux503cux5206ux89e3}{%
+\paragraph{\texorpdfstring{\textbf{a）进行谱分解、奇异值分解}}{a）进行谱分解、奇异值分解}}\label{aux8fdbux884cux8c31ux5206ux89e3ux5947ux5f02ux503cux5206ux89e3}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#谱分解}
+\NormalTok{eig }\OtherTok{\textless{}{-}} \FunctionTok{eigen}\NormalTok{(sigma) }\CommentTok{\#求sigma的特征值及对应特征向量}
+\NormalTok{V }\OtherTok{\textless{}{-}}\NormalTok{ eig}\SpecialCharTok{$}\NormalTok{vectors }\CommentTok{\#V是特征向量 （组成的矩阵）}
+\NormalTok{lam }\OtherTok{\textless{}{-}}\NormalTok{ eig}\SpecialCharTok{$}\NormalTok{values }\CommentTok{\#lam是特征值（组成的向量）}
+\CommentTok{\#输出谱分解结果}
+\FunctionTok{print}\NormalTok{(}\StringTok{"V:"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(V)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"lambda:"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(lam)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"V inverse:"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\FunctionTok{solve}\NormalTok{(V))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "V:"
+##            [,1]          [,2]       [,3]          [,4]       [,5]
+## [1,] -0.3940662  5.767041e-01 -0.5453050 -4.091606e-01  0.2176104
+## [2,] -0.4704256  4.091606e-01  0.1364390  5.767041e-01 -0.5099845
+## [3,] -0.4968131 -2.775558e-16  0.6066743 -6.106227e-16  0.6205828
+## [4,] -0.4704256 -4.091606e-01  0.1364390 -5.767041e-01 -0.5099845
+## [5,] -0.3940662 -5.767041e-01 -0.5453050  4.091606e-01  0.2176104
+## [1] "lambda:"
+## [1] 3.1029654 1.0131847 0.4339891 0.2567153 0.1931455
+## [1] "V inverse:"
+##            [,1]       [,2]          [,3]       [,4]       [,5]
+## [1,] -0.3940662 -0.4704256 -4.968131e-01 -0.4704256 -0.3940662
+## [2,]  0.5767041  0.4091606 -1.925117e-16 -0.4091606 -0.5767041
+## [3,] -0.5453050  0.1364390  6.066743e-01  0.1364390 -0.5453050
+## [4,] -0.4091606  0.5767041 -3.841621e-16 -0.5767041  0.4091606
+## [5,]  0.2176104 -0.5099845  6.205828e-01 -0.5099845  0.2176104
+\end{verbatim}
+
+故谱分解：\(\Sigma=V\Lambda V^{-1}\)，具体系数见上方输出。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#奇异值分解}
+\NormalTok{svd }\OtherTok{\textless{}{-}} \FunctionTok{svd}\NormalTok{(sigma)}
+\FunctionTok{print}\NormalTok{(svd)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"奇异值分解：sigma = U \%*\% D \%*\% transpose(V)"}\NormalTok{) }\CommentTok{\#sigma = UDV\^{}\{T\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $d
+## [1] 3.1029654 1.0131847 0.4339891 0.2567153 0.1931455
+## 
+## $u
+##            [,1]       [,2]       [,3]          [,4]       [,5]
+## [1,] -0.3940662  0.5767041  0.5453050 -4.091606e-01  0.2176104
+## [2,] -0.4704256  0.4091606 -0.1364390  5.767041e-01 -0.5099845
+## [3,] -0.4968131  0.0000000 -0.6066743 -1.151856e-15  0.6205828
+## [4,] -0.4704256 -0.4091606 -0.1364390 -5.767041e-01 -0.5099845
+## [5,] -0.3940662 -0.5767041  0.5453050  4.091606e-01  0.2176104
+## 
+## $v
+##            [,1]          [,2]       [,3]          [,4]       [,5]
+## [1,] -0.3940662  5.767041e-01  0.5453050 -4.091606e-01  0.2176104
+## [2,] -0.4704256  4.091606e-01 -0.1364390  5.767041e-01 -0.5099845
+## [3,] -0.4968131 -8.326673e-17 -0.6066743 -1.221245e-15  0.6205828
+## [4,] -0.4704256 -4.091606e-01 -0.1364390 -5.767041e-01 -0.5099845
+## [5,] -0.3940662 -5.767041e-01  0.5453050  4.091606e-01  0.2176104
+## 
+## [1] "奇异值分解：sigma = U %*% D %*% transpose(V)"
+\end{verbatim}
+
+故奇异值分解：\(\Sigma=UDV^T\),具体系数见上方输出。
+
+\hypertarget{bux6c42ux5176ux7279ux5f81ux503cux7279ux5f81ux5411ux91cf}{%
+\paragraph{\texorpdfstring{\textbf{b）求其特征值、特征向量}}{b）求其特征值、特征向量}}\label{bux6c42ux5176ux7279ux5f81ux503cux7279ux5f81ux5411ux91cf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{eigen}\NormalTok{(sigma)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## eigen() decomposition
+## $values
+## [1] 3.1029654 1.0131847 0.4339891 0.2567153 0.1931455
+## 
+## $vectors
+##            [,1]          [,2]       [,3]          [,4]       [,5]
+## [1,] -0.3940662  5.767041e-01 -0.5453050 -4.091606e-01  0.2176104
+## [2,] -0.4704256  4.091606e-01  0.1364390  5.767041e-01 -0.5099845
+## [3,] -0.4968131 -2.775558e-16  0.6066743 -6.106227e-16  0.6205828
+## [4,] -0.4704256 -4.091606e-01  0.1364390 -5.767041e-01 -0.5099845
+## [5,] -0.3940662 -5.767041e-01 -0.5453050  4.091606e-01  0.2176104
+\end{verbatim}
+
+见上方输出，其中values项为特征值，vectors矩阵的每一列为相应特征值对应的特征向量。
+
+\hypertarget{ux968fux673aux751fux6210ux4e00ux4e2a5ux7ef4ux6ee1ux79e9ux7684ux65b9ux9635a-ux6c42yaxux7684ux5206ux5e03}{%
+\subsubsection{\texorpdfstring{\textbf{3) 随机生成一个5维满秩的方阵A，
+求Y=AX的分布}}{3) 随机生成一个5维满秩的方阵A， 求Y=AX的分布}}\label{ux968fux673aux751fux6210ux4e00ux4e2a5ux7ef4ux6ee1ux79e9ux7684ux65b9ux9635a-ux6c42yaxux7684ux5206ux5e03}}
+
+首先可知\(Y\)服从正态分布，下求解具体系数
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{A }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{rnorm}\NormalTok{(}\DecValTok{25}\NormalTok{),}\AttributeTok{nrow=}\DecValTok{5}\NormalTok{,}\AttributeTok{ncol=}\DecValTok{5}\NormalTok{) }\CommentTok{\#随机生成矩阵}
+\FunctionTok{qr}\NormalTok{(A)}\SpecialCharTok{$}\NormalTok{rank }\CommentTok{\#这里检验是否是满秩的(rank=5)}
+\NormalTok{Y }\OtherTok{\textless{}{-}}\NormalTok{ A}\SpecialCharTok{\%*\%}\NormalTok{X }\CommentTok{\#按照要求生成Y}
+\FunctionTok{print}\NormalTok{(Y)}
+\CommentTok{\#下面计算理论值：}
+\NormalTok{mu\_Y }\OtherTok{\textless{}{-}}\NormalTok{ A}\SpecialCharTok{\%*\%}\NormalTok{mu}
+\NormalTok{var\_Y }\OtherTok{\textless{}{-}}\NormalTok{ A}\SpecialCharTok{\%*\%}\NormalTok{sigma}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(A)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"Y分布均值"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(mu\_Y)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"Y协方差矩阵"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(var\_Y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5
+##           [,1]
+## [1,] -3.130644
+## [2,]  2.755469
+## [3,] -3.926626
+## [4,] -1.273472
+## [5,]  4.849129
+## [1] "Y分布均值"
+##            [,1]
+## [1,] -3.0200152
+## [2,]  2.5773808
+## [3,] -1.5213554
+## [4,] -0.8351595
+## [5,]  5.7466233
+## [1] "Y协方差矩阵"
+##            [,1]        [,2]       [,3]       [,4]        [,5]
+## [1,]  5.4400425  0.58298850 -2.0670493  1.7847065 -2.63501926
+## [2,]  0.5829885  1.16085191 -1.6977988 -0.3944269  0.07245331
+## [3,] -2.0670493 -1.69779878  5.0072108  0.4589221  1.64394018
+## [4,]  1.7847065 -0.39442687  0.4589221  1.1512414 -0.52256349
+## [5,] -2.6350193  0.07245331  1.6439402 -0.5225635  2.58928343
+\end{verbatim}
+
+随机向量Y的取值如上面输出所示，其服从正态分布，具体均值、方差输出见上。
+
+\hypertarget{ux6c42ux7ed9ux5b9ax3x4x5ux65f6-x1-x2ux7684ux6761ux4ef6ux5206ux5e03}{%
+\subsubsection{\texorpdfstring{\textbf{4) 求给定（X3,X4,X5）时 （X1,
+X2）的条件分布}}{4) 求给定（X3,X4,X5）时 （X1, X2）的条件分布}}\label{ux6c42ux7ed9ux5b9ax3x4x5ux65f6-x1-x2ux7684ux6761ux4ef6ux5206ux5e03}}
+
+对\(X\)按照题设进行分块，记为\(X=(x_1;x_2)^T\)，相应的其均值为\(\mu=(\mu_1;\mu_2)^T\)，
+其协方差矩阵记为\(\Sigma=(\Sigma_{1,1}\Sigma_{1,2};\Sigma_{2,1}\Sigma_{2,2})\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#分块后的协方差矩阵}
+\NormalTok{sig11 }\OtherTok{\textless{}{-}}\NormalTok{ sigma[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]}
+\NormalTok{sig12 }\OtherTok{\textless{}{-}}\NormalTok{ sigma[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{3}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+\NormalTok{sig21 }\OtherTok{\textless{}{-}}\NormalTok{ sigma[}\DecValTok{3}\SpecialCharTok{:}\DecValTok{5}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]}
+\NormalTok{sig22 }\OtherTok{\textless{}{-}}\NormalTok{ sigma[}\DecValTok{3}\SpecialCharTok{:}\DecValTok{5}\NormalTok{,}\DecValTok{3}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+
+\CommentTok{\#由条件期望公式可以计算：}
+\NormalTok{k }\OtherTok{\textless{}{-}}\NormalTok{ sig12}\SpecialCharTok{\%*\%}\FunctionTok{solve}\NormalTok{(sig22)}
+\NormalTok{mu1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{)}
+\NormalTok{mu2 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{5}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"mu\_1.2=mu1+sig12 inv(sig22) (x2{-}mu2)，其中："}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"mu1"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(mu1)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"sig12 inv(sig22):"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(k)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"mu2"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(mu2)}
+
+
+\CommentTok{\#由条件方差公式可以计算：}
+\NormalTok{sig11\_2 }\OtherTok{\textless{}{-}}\NormalTok{ sig11}\SpecialCharTok{{-}}\NormalTok{sig12}\SpecialCharTok{\%*\%}\FunctionTok{solve}\NormalTok{(sig22)}\SpecialCharTok{\%*\%}\NormalTok{sig21}
+\FunctionTok{print}\NormalTok{(}\StringTok{"sig11\_2"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(sig11\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "mu_1.2=mu1+sig12 inv(sig22) (x2-mu2)，其中："
+## [1] "mu1"
+## [1] 1 2
+## [1] "sig12 inv(sig22):"
+##      [,1]          [,2]         [,3]
+## [1,] 0.49 -1.665335e-16 5.551115e-17
+## [2,] 0.70 -1.665335e-16 0.000000e+00
+## [1] "mu2"
+## [1] 3 4 5
+## [1] "sig11_2"
+##        [,1]  [,2]
+## [1,] 0.7599 0.357
+## [2,] 0.3570 0.510
+\end{verbatim}
+
+条件分布仍是正态分布，其均值\(\mu_{1.2}=\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)\)，
+协方差矩阵\(\Sigma_{11.2}=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)
+其具体取值由于没有给出具体\(x\)的取值，故无法进行进一步整理，算式中其余各元素取值见上方输出。
+
+\hypertarget{ux6c42y1-ux4e0e-y2y3y4y5ux7684ux590dux76f8ux5173ux7cfbux6570}{%
+\subsubsection{\texorpdfstring{\textbf{5) 求Y1 与
+（Y2,Y3,Y4,Y5）的复相关系数}}{5) 求Y1 与 （Y2,Y3,Y4,Y5）的复相关系数}}\label{ux6c42y1-ux4e0e-y2y3y4y5ux7684ux590dux76f8ux5173ux7cfbux6570}}
+
+复相关系数计算：\(\rho_{y\cdot x}=\sqrt{\rho_{xy}^\prime R_{xx}^{-1}\rho_{xy}}\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 为了方便计算，这里按照规定分布生成具有100行观测的Y}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{) }\CommentTok{\#设置种子}
+\NormalTok{Y\_expand }\OtherTok{\textless{}{-}} \FunctionTok{mvrnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{,mu\_Y,var\_Y)}
+\NormalTok{R }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(Y\_expand) }\CommentTok{\# R是Y的相关系数矩阵}
+\NormalTok{r\_xy }\OtherTok{\textless{}{-}}\NormalTok{ R[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\SpecialCharTok{:}\DecValTok{5}\NormalTok{] }\CommentTok{\#提取分块矩阵}
+\NormalTok{R\_xx }\OtherTok{\textless{}{-}}\NormalTok{ R[}\DecValTok{2}\SpecialCharTok{:}\DecValTok{5}\NormalTok{,}\DecValTok{2}\SpecialCharTok{:}\DecValTok{5}\NormalTok{] }\CommentTok{\#提取分块矩阵元素  }
+\NormalTok{rho\_y.x }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{t}\NormalTok{(r\_xy)}\SpecialCharTok{\%*\%}\FunctionTok{solve}\NormalTok{(R\_xx)}\SpecialCharTok{\%*\%}\NormalTok{r\_xy) }\CommentTok{\#根据复相关系数公式计算}
+\FunctionTok{print}\NormalTok{(rho\_y.x)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           [,1]
+## [1,] 0.9999892
+\end{verbatim}
+
+复相关系数计算结果如上所示。
+
+\hypertarget{ux6c42y2y3y4y5ux5bf9y1ux7ebfux6027ux56deux5f52ux7684r2ux5e76ux5bf9ux6bd45ux4e2dux6c42ux7684ux590dux76f8ux5173ux7cfbux6570}{%
+\subsubsection{\texorpdfstring{\textbf{6)
+求（Y2,Y3,Y4,Y5）对（Y1）线性回归的R2，并对比5）中求的复相关系数}}{6) 求（Y2,Y3,Y4,Y5）对（Y1）线性回归的R2，并对比5）中求的复相关系数}}\label{ux6c42y2y3y4y5ux5bf9y1ux7ebfux6027ux56deux5f52ux7684r2ux5e76ux5bf9ux6bd45ux4e2dux6c42ux7684ux590dux76f8ux5173ux7cfbux6570}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#提取各Y列向量}
+\NormalTok{Y1 }\OtherTok{\textless{}{-}}\NormalTok{ Y\_expand[,}\DecValTok{1}\NormalTok{]}
+\NormalTok{Y2 }\OtherTok{\textless{}{-}}\NormalTok{ Y\_expand[,}\DecValTok{2}\NormalTok{]}
+\NormalTok{Y3 }\OtherTok{\textless{}{-}}\NormalTok{ Y\_expand[,}\DecValTok{3}\NormalTok{]}
+\NormalTok{Y4 }\OtherTok{\textless{}{-}}\NormalTok{ Y\_expand[,}\DecValTok{4}\NormalTok{]}
+\NormalTok{Y5 }\OtherTok{\textless{}{-}}\NormalTok{ Y\_expand[,}\DecValTok{5}\NormalTok{]}
+\CommentTok{\#线性回归}
+\NormalTok{lm }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Y1}\SpecialCharTok{\textasciitilde{}}\NormalTok{Y2}\SpecialCharTok{+}\NormalTok{Y3}\SpecialCharTok{+}\NormalTok{Y4}\SpecialCharTok{+}\NormalTok{Y5) }\CommentTok{\#设置回归模型}
+\FunctionTok{summary}\NormalTok{(lm) }\CommentTok{\#展示回归报告}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Y1 ~ Y2 + Y3 + Y4 + Y5)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -0.0256991 -0.0060208  0.0008331  0.0071306  0.0256328 
+## 
+## Coefficients:
+##               Estimate Std. Error  t value Pr(>|t|)    
+## (Intercept)  0.0255548  0.0049582    5.154 1.38e-06 ***
+## Y2           1.3597182  0.0016092  844.988  < 2e-16 ***
+## Y3           0.1912730  0.0008772  218.047  < 2e-16 ***
+## Y4           1.5476887  0.0012054 1283.921  < 2e-16 ***
+## Y5          -0.8640382  0.0009075 -952.088  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.01019 on 95 degrees of freedom
+## Multiple R-squared:      1,  Adjusted R-squared:      1 
+## F-statistic: 1.104e+06 on 4 and 95 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+由上方报告可见，在回归分析中的\(R^2\)为报告输出倒数第二行的 Multiple
+R-squared 项，其数值要略小于其复相关系数，但较为接近。
+
+\hypertarget{ux6c42ux7ed9ux5b9ay3y4y5ux65f6-y1-y2ux7684ux504fux76f8ux5173ux7cfbux6570ux77e9ux9635ux5e76ux4e0ey1y2ux7684ux76f8ux5173ux7cfbux6570ux77e9ux9635ux8fdbux884cux5bf9ux6bd4}{%
+\subsubsection{\texorpdfstring{\textbf{7) 求给定（Y3,Y4,Y5）时 （Y1,
+Y2）的偏相关系数矩阵，并与（Y1，Y2）的相关系数矩阵进行对比}}{7) 求给定（Y3,Y4,Y5）时 （Y1, Y2）的偏相关系数矩阵，并与（Y1，Y2）的相关系数矩阵进行对比}}\label{ux6c42ux7ed9ux5b9ay3y4y5ux65f6-y1-y2ux7684ux504fux76f8ux5173ux7cfbux6570ux77e9ux9635ux5e76ux4e0ey1y2ux7684ux76f8ux5173ux7cfbux6570ux77e9ux9635ux8fdbux884cux5bf9ux6bd4}}
+
+由公式：\(\Sigma_{11\cdot2}=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)可求片协方差矩阵.
+再由\(\rho_{ij\cdot k+1,...,p}=\frac{\sigma_{ij\cdot k+1,...,p}}{\sqrt{\sigma_{ii\cdot k+1,...,p}\sigma_{jj\cdot k+1,...,p}}}\)
+即可求得偏相关系数
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Sig\_Y\_e }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(Y\_expand) }\CommentTok{\#求出协方差矩阵}
+\CommentTok{\#提取各分块}
+\NormalTok{Sig\_Y11 }\OtherTok{\textless{}{-}}\NormalTok{ Sig\_Y\_e[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]}
+\NormalTok{Sig\_Y12 }\OtherTok{\textless{}{-}}\NormalTok{ Sig\_Y\_e[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{,}\DecValTok{3}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+\NormalTok{Sig\_Y21 }\OtherTok{\textless{}{-}}\NormalTok{ Sig\_Y\_e[}\DecValTok{3}\SpecialCharTok{:}\DecValTok{5}\NormalTok{,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]}
+\NormalTok{Sig\_Y22 }\OtherTok{\textless{}{-}}\NormalTok{ Sig\_Y\_e[}\DecValTok{3}\SpecialCharTok{:}\DecValTok{5}\NormalTok{,}\DecValTok{3}\SpecialCharTok{:}\DecValTok{5}\NormalTok{]}
+\CommentTok{\#根据公式计算偏相关系数矩阵：}
+\NormalTok{Sig\_Y\_11}\FloatTok{.2} \OtherTok{\textless{}{-}}\NormalTok{ Sig\_Y11}\SpecialCharTok{{-}}\NormalTok{Sig\_Y12}\SpecialCharTok{\%*\%}\FunctionTok{solve}\NormalTok{(Sig\_Y22)}\SpecialCharTok{\%*\%}\NormalTok{Sig\_Y21 }\CommentTok{\#偏协方差}
+\NormalTok{diag\_Y\_11}\FloatTok{.2} \OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{diag}\NormalTok{(Sig\_Y\_11}\FloatTok{.2}\NormalTok{)) }\CommentTok{\#得到对角线上的分量标准差}
+\NormalTok{sd\_Y\_11}\FloatTok{.2} \OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(diag\_Y\_11}\FloatTok{.2}\NormalTok{[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{*}\NormalTok{diag\_Y\_11}\FloatTok{.2}\NormalTok{[}\DecValTok{1}\NormalTok{],diag\_Y\_11}\FloatTok{.2}\NormalTok{[}\DecValTok{1}\NormalTok{]}\SpecialCharTok{*}\NormalTok{diag\_Y\_11}\FloatTok{.2}\NormalTok{[}\DecValTok{2}\NormalTok{],diag\_Y\_11}\FloatTok{.2}\NormalTok{[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{*}\NormalTok{diag\_Y\_11}\FloatTok{.2}\NormalTok{[}\DecValTok{1}\NormalTok{],diag\_Y\_11}\FloatTok{.2}\NormalTok{[}\DecValTok{2}\NormalTok{]}\SpecialCharTok{*}\NormalTok{diag\_Y\_11}\FloatTok{.2}\NormalTok{[}\DecValTok{2}\NormalTok{]),}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{) }\CommentTok{\#初始化相关系数公式中的分母部分}
+\NormalTok{corr\_Y\_11}\FloatTok{.2} \OtherTok{\textless{}{-}}\NormalTok{ Sig\_Y\_11}\FloatTok{.2} \SpecialCharTok{/}\NormalTok{ sd\_Y\_11}\FloatTok{.2} \CommentTok{\# rho = cov(x,y)/sqrt(var(x)*var(y))}
+\CommentTok{\#计算相关系数矩阵：}
+\NormalTok{corr\_Y\_12 }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(Y\_expand[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{])}
+\CommentTok{\#输出结果}
+\FunctionTok{print}\NormalTok{(}\StringTok{"偏相关系数矩阵："}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(corr\_Y\_11}\FloatTok{.2}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"相关系数矩阵："}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(corr\_Y\_12)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "偏相关系数矩阵："
+##           [,1]      [,2]
+## [1,] 1.0000000 0.9999335
+## [2,] 0.9999335 1.0000000
+## [1] "相关系数矩阵："
+##           [,1]      [,2]
+## [1,] 1.0000000 0.1358897
+## [2,] 0.1358897 1.0000000
+\end{verbatim}
+
+\hypertarget{ux57faux4e8e1ux7684ux603bux4f53ux5206ux5e03ux968fux673aux4ea7ux751fux4e00ux7ec4ux6837ux672cux5bb9ux91cfux4e3a100ux7684ux6837ux672caux8ba1ux7b97ux6837ux672cux5747ux503cux6837ux672cux534fux65b9ux5deeux77e9ux9635bux9a8cux8bc1ux6837ux672cux534fux65b9ux5deeux9635ux7684ux6b63ux5b9aux6027}{%
+\subsubsection{\texorpdfstring{\textbf{8)
+基于1）的总体分布，随机产生一组样本容量为100的样本，a)计算样本均值、样本协方差矩阵；b)验证样本协方差阵的正定性}}{8) 基于1）的总体分布，随机产生一组样本容量为100的样本，a)计算样本均值、样本协方差矩阵；b)验证样本协方差阵的正定性}}\label{ux57faux4e8e1ux7684ux603bux4f53ux5206ux5e03ux968fux673aux4ea7ux751fux4e00ux7ec4ux6837ux672cux5bb9ux91cfux4e3a100ux7684ux6837ux672caux8ba1ux7b97ux6837ux672cux5747ux503cux6837ux672cux534fux65b9ux5deeux77e9ux9635bux9a8cux8bc1ux6837ux672cux534fux65b9ux5deeux9635ux7684ux6b63ux5b9aux6027}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample }\OtherTok{\textless{}{-}} \FunctionTok{mvrnorm}\NormalTok{(}\DecValTok{100}\NormalTok{,mu,sigma) }\CommentTok{\#生成样本}
+\NormalTok{sample\_mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(sample) }\CommentTok{\#计算样本均值}
+\NormalTok{sample\_cov }\OtherTok{\textless{}{-}} \FunctionTok{cov}\NormalTok{(sample) }\CommentTok{\#计算样本方差}
+\NormalTok{sample\_cov\_eign }\OtherTok{\textless{}{-}} \FunctionTok{eigen}\NormalTok{(sample\_cov) }\CommentTok{\#计算样本协方差矩阵特征值}
+\FunctionTok{print}\NormalTok{(}\StringTok{"样本均值："}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(sample\_mean)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"样本协方差："}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(sample\_cov)}
+\FunctionTok{print}\NormalTok{(}\StringTok{"样本协方差矩阵特征值："}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(sample\_cov\_eign)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "样本均值："
+## [1] 3.030165
+## [1] "样本协方差："
+##           [,1]      [,2]      [,3]      [,4]      [,5]
+## [1,] 1.1189391 0.6928712 0.4675340 0.3418906 0.1743994
+## [2,] 0.6928712 0.8968692 0.5738899 0.4022014 0.2561689
+## [3,] 0.4675340 0.5738899 0.8697508 0.5752501 0.3812191
+## [4,] 0.3418906 0.4022014 0.5752501 0.8684715 0.6012226
+## [5,] 0.1743994 0.2561689 0.3812191 0.6012226 0.9793495
+## [1] "样本协方差矩阵特征值："
+## eigen() decomposition
+## $values
+## [1] 2.7484542 1.0697058 0.4383362 0.2767548 0.2001290
+## 
+## $vectors
+##            [,1]       [,2]       [,3]        [,4]       [,5]
+## [1,] -0.4687556  0.5717940 -0.5174379 -0.37502638  0.2119739
+## [2,] -0.4700363  0.3334439  0.1254122  0.65920479 -0.4664781
+## [3,] -0.4721632 -0.0343484  0.6493464 -0.02195075  0.5947685
+## [4,] -0.4480616 -0.3828681  0.1536140 -0.55558303 -0.5660239
+## [5,] -0.3682890 -0.6435052 -0.5208472  0.34007341  0.2516596
+\end{verbatim}
+
+样本的均值、协方差矩阵如图所示。由正定矩阵的性质：对于\(n\)阶实值对称矩阵\(A\)，\(A\)是正定矩阵等价于\(A\)的所有特征值均为正。该命题再上述输出中得到数值验证。
+
+\end{document}
