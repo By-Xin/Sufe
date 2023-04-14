@@ -8,6 +8,11 @@ In this rep, it will mainly be used to sync my lect assignments and so on.
 
 Maybe there will also be a website storing my lecture notes, but let's just wait and see.
 
+---------------------------------------------------
+**ATTENTION!**
+
+**Do not forget to go to *Wiki* to find out more!**
+
 
 ---------------------------------------------------
 
@@ -20,12 +25,7 @@ Here are some lecture notes in this rep, and more is on the way!
 * **SAS** _[status: course finised, notes gathering]_
 * **Time Series Analysis (TSA)** _[status: course unfinished, more to come, just wait and see]_
 
----------------------------------------------------
-**ATTENTION!**
 
-**Do not forget to go to *Wiki* to find out more!**
-
----------------------------------------------------
 
 
 
