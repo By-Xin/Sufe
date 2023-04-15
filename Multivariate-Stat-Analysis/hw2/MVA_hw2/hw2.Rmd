@@ -220,32 +220,13 @@ path4.test <- "/Users/xinby/Desktop/Sufe/Multivariate-Stat-Analysis/hw2/exec5.6a
 dat4.train <- readxl::read_excel(path4.train)
 dat4.test <- readxl::read_excel(path4.test) 
 
-# slice the data
-dat4.gp1 <- as.matrix(dat4.train %>% filter(g==1) %>% select(-g))
-dat4.gp2 <- as.matrix(dat4.train %>% filter(g==2) %>% select(-g))
-dat4 <- as.matrix(dat4.train %>% select(-g))
+# Same Variance Assumption: USING `lda`
+prd_1 <- lda(g~x1+x2+x3+x4+x5+x6, prior = c(0.5,0.5), data = dat4.train)
+result_1 <- cbind(c(1:14),predict(prd_1, dat4.test)$class)
+result_1
 
-# calculate mean & var 
-mu1 <- apply(dat4.gp1, 2, mean)
-mu2 <- apply(dat4.gp2, 2, mean)
-var1 <- cov(dat4.gp1)
-var2 <- cov(dat4.gp2)
-
-# calculate the distance
-Pr1 <- 0; Pr2 <- 0; PlayerGrp <- 0; x <- 0
-for (player in 1:14){
-  x <- as.matrix(dat4.test[player,])
-  dis1 <- (x- mu1) %*% solve(var1,t(x-mu1))
-  dis2 <- (x- mu2) %*% solve(var2,t(x-mu2))
-  Pr1 <- exp(-0.5*dis1)
-  Pr2 <- exp(-0.5*dis2)
-  if ( Pr1/(Pr1+Pr2) < Pr2/(Pr1+Pr2) ){
-    PlayerGrp[player] = 2
-  }
-  if ( Pr1/(Pr1+Pr2) > Pr2/(Pr1+Pr2) ){
-    PlayerGrp[player] = 1
-  }
-}
-id <- c(1:14)
-print(cbind(id,PlayerGrp))
+# Different Variance Assumption: USING `qda`
+prd_2 <- qda(g~x1+x2+x3+x4+x5+x6, prior = c(0.5,0.5), data = dat4.train)
+result_2 <- cbind(c(1:14),predict(prd_2, dat4.test)$class)
+result_2
 ```
