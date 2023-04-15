@@ -463,13 +463,47 @@ mu2 &lt;- apply(nrain, 2, mean)
 d1 &lt;- t(dat3.test - mu1) %*% solve(var1, dat3.test - mu1)
 d2 &lt;- t(dat3.test - mu2) %*% solve(var2, dat3.test - mu2)
 Wx &lt;- d1 - d2
-print(Wx)</code></pre>
+print(Wx)
+
+# calculate misjudge rate
+mis1.2 = 0
+mis2.1 = 0
+all = 0
+
+# go through the train set to see if it is correctly judged
+for (line in 1:20) {
+    # calculate each obs&#39; distance
+    d1.test &lt;- t(dat3.train[line, ] - mu1) %*% solve(var1, dat3.train[line, ] - mu1)
+    d2.test &lt;- t(dat3.train[line, ] - mu2) %*% solve(var2, dat3.train[line, ] - mu2)
+    # judge which group it belongs to
+    Wx.test &lt;- 0
+    if (d1.test - d2.test &lt;= 0) {
+        Wx.test[line] = 1
+    } else {
+        Wx.test[line] = 2
+    }
+    # count the correct rate
+    if (Wx.test[line] == 1 &amp;&amp; dat3$g[line] == 2) {
+        mis1.2 = mis1.2 + 1
+    }
+    if (Wx.test[line] == 2 &amp;&amp; dat3$g[line] == 1) {
+        mis2.1 = mis2.1 + 1
+    }
+    all = all + 1
+}
+
+misjudge_rate_2.1 = mis2.1/all
+misjudge_rate_1.2 = mis1.2/all
+print(misjudge_rate_2.1)
+print(misjudge_rate_1.2)</code></pre>
 <pre><code>##           [,1]
-## [1,] -1.950508</code></pre>
+## [1,] -1.950508
+## [1] 0
+## [1] 0.25</code></pre>
 <p>由于方差计算认为两组相差较大，故采用二次型判别规则。 令 <span class="math display">\[W(x)=(x-\mu_1)&#39;\Sigma_1^{-1}(x-\mu1)-(x-\mu_2)&#39;\Sigma_2^{-1}(x-\mu2)\]</span>
 则有： <span class="math display">\[x \in \pi_1 ~\text{if} ~W(x)\leq 0,
 \\ x\in \pi_2, ~\text{if}~ W(x)&gt;0.\]</span>
-由上述输出结果可知，W(x)&lt;0，因此认为明天会下雨。</p>
+由上述输出结果可知，W(x)&lt;0，因此认为明天会下雨。误判概率如上输出所示。</p>
 <p><strong>b. 给定先验概率，p1=0.3,
 p2=0.7，预报每天是否会下雨</strong></p>
 <p>由Bayes准则的最大后验法，在正态分布条件下有：</p>
@@ -502,7 +536,63 @@ print(t(a) %*% (dat3.test - mu))</code></pre>
 ##           [,1]
 ## [1,] 0.3622237</code></pre>
 <p>由上述输出结果，根据判别规则，当考虑误判代价时，明天不应该举行活动。</p>
-<p>由上述输出结果可知，认为明天</p>
+</div>
+<div id="习题5.6" class="section level4">
+<h4>(4) 习题5.6</h4>
+<p><strong>a.
+对于14名运动员，分别在方差相等和不等的假设下进行Bayes判别</strong></p>
+<p>在正态分布假设下，若考虑误判概率相等，先验概率相等，当同方差时有：
+<span class="math display">\[P\left(\pi_i \mid
+\boldsymbol{x}\right)=\frac{\exp \left[-\frac{1}{2}
+d^2\left(\boldsymbol{x}, \pi_i\right)\right]}{\sum_{j=1}^k \exp
+\left[-\frac{1}{2} d^2\left(\boldsymbol{x},
+\pi_j\right)\right]}\]</span></p>
+<p>在异方差时有： <span class="math display">\[P\left(\pi_i \mid
+\boldsymbol{x}\right)=\frac{\exp
+\left\{-\frac{1}{2}\left[d^2\left(\boldsymbol{x}, \pi_i\right)+\ln
+\left|\Sigma_i\right|\right]\right\}}{\sum_{j=1}^k \exp
+\left\{-\frac{1}{2}\left[d^2\left(\boldsymbol{x}, \pi_j\right)+\ln
+\left|\Sigma_j\right|\right]\right\}}\]</span></p>
+<p>其中 <span class="math display">\[d^2\left(\boldsymbol{x},
+\boldsymbol{\pi}_i\right)=\left(\boldsymbol{x}-\boldsymbol{\mu}_i\right)^{\prime}
+\boldsymbol{\Sigma}_i^{-1}\left(\boldsymbol{x}-\boldsymbol{\mu}_i\right)\]</span></p>
+<pre class="r"><code># import the data
+path4.train &lt;- &quot;/Users/xinby/Desktop/Sufe/Multivariate-Stat-Analysis/hw2/exec5.6.xlsx&quot;
+path4.test &lt;- &quot;/Users/xinby/Desktop/Sufe/Multivariate-Stat-Analysis/hw2/exec5.6a.xlsx&quot;
+dat4.train &lt;- readxl::read_excel(path4.train)
+dat4.test &lt;- readxl::read_excel(path4.test)
+
+# Same Variance Assumption: USING `lda`
+prd_1 &lt;- lda(g ~ x1 + x2 + x3 + x4 + x5 + x6, prior = c(0.5, 0.5), data = dat4.train)
+
+# Different Variance Assumption: USING `qda`
+prd_2 &lt;- qda(g ~ x1 + x2 + x3 + x4 + x5 + x6, prior = c(0.5, 0.5), data = dat4.train)
+
+# Output the classification result
+id &lt;- c(1:14)
+class_1 &lt;- predict(prd_1, dat4.test)$class
+class_2 &lt;- predict(prd_2, dat4.test)$class
+result &lt;- cbind(id, class_1, class_2)
+print(&quot;classification :&quot;)
+print(result)</code></pre>
+<pre><code>## [1] &quot;classification :&quot;
+##       id class_1 class_2
+##  [1,]  1       1       1
+##  [2,]  2       1       1
+##  [3,]  3       1       1
+##  [4,]  4       1       1
+##  [5,]  5       1       1
+##  [6,]  6       1       1
+##  [7,]  7       1       1
+##  [8,]  8       2       2
+##  [9,]  9       2       2
+## [10,] 10       1       1
+## [11,] 11       2       2
+## [12,] 12       2       2
+## [13,] 13       1       2
+## [14,] 14       2       2</code></pre>
+<p>由上述输出结果可见，同方差假设下，一级运动员有1～7、10、13，健将级运动员有：8、9、11、12、14；
+异方差假设下，一级运动员有1～7、10，健将级运动员有：8、9、11～14.</p>
 </div>
 
 

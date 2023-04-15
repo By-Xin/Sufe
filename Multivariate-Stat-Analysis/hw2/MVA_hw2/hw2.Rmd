@@ -2,7 +2,9 @@
 title: "第二次作业"
 author: "辛柏嬴 2020111753"
 date: "2023-04-12"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -94,7 +96,8 @@ print(T.05_c)
 
 **a. 试给出判别规则，并预报明天是否会下雨，用回代法估计误判概率**
 
-```{r 3a,results='hold',tidy=TRUE}
+```{r 3a, results='hold', tidy=TRUE}
+
 # import data
 path3.train <- "/Users/xinby/Desktop/Sufe/Multivariate-Stat-Analysis/hw2/exec5.5.xlsx"
 path3.test <- "/Users/xinby/Desktop/Sufe/Multivariate-Stat-Analysis/hw2/exec5.5a.xlsx"
@@ -133,6 +136,7 @@ for (line in 1:20){
   d1.test <- t(dat3.train[line,]-mu1)%*%solve(var1,dat3.train[line,]-mu1)
   d2.test <- t(dat3.train[line,]-mu2)%*%solve(var2,dat3.train[line,]-mu2)
     # judge which group it belongs to 
+  Wx.test <- 0
   if ( d1.test - d2.test <= 0 ){
     Wx.test[line]=1 
   }
@@ -212,7 +216,7 @@ $$P\left(\pi_i \mid \boldsymbol{x}\right)=\frac{\exp \left\{-\frac{1}{2}\left[d^
 其中 
 $$d^2\left(\boldsymbol{x}, \boldsymbol{\pi}_i\right)=\left(\boldsymbol{x}-\boldsymbol{\mu}_i\right)^{\prime} \boldsymbol{\Sigma}_i^{-1}\left(\boldsymbol{x}-\boldsymbol{\mu}_i\right)$$
 
-```{r 4a1, results='hold',tidy=TRUE}
+```{r 4a, results='hold',tidy=TRUE}
 
 # import the data
 path4.train <- "/Users/xinby/Desktop/Sufe/Multivariate-Stat-Analysis/hw2/exec5.6.xlsx"
@@ -222,11 +226,78 @@ dat4.test <- readxl::read_excel(path4.test)
 
 # Same Variance Assumption: USING `lda`
 prd_1 <- lda(g~x1+x2+x3+x4+x5+x6, prior = c(0.5,0.5), data = dat4.train)
-result_1 <- cbind(c(1:14),predict(prd_1, dat4.test)$class)
-result_1
 
 # Different Variance Assumption: USING `qda`
 prd_2 <- qda(g~x1+x2+x3+x4+x5+x6, prior = c(0.5,0.5), data = dat4.train)
-result_2 <- cbind(c(1:14),predict(prd_2, dat4.test)$class)
-result_2
+
+# Output the classification result
+id <- c(1:14)
+class_1 <- predict(prd_1, dat4.test)$class
+class_2 <- predict(prd_2, dat4.test)$class
+result <- cbind(id, class_1, class_2)
+print("classification :")
+print(result)
 ```
+
+由上述输出结果可见，同方差假设下，一级运动员有1～7、10、13，健将级运动员有：8、9、11、12、14；
+异方差假设下，一级运动员有1～7、10，健将级运动员有：8、9、11～14.
+
+**b. 试按照回代法和交叉验证法分别对（1）的误判概率进行估计**
+
+```{r 4b, results='hold', tidy=TRUE}
+
+# Same Var
+  # in-sample validation
+class_train.eqvar <- predict(prd_1, dat4.train)$class
+real_train <- dat4.train$g
+print("same var - in_sample vald.")
+print(prop.table(table(g = real_train, class_train.eqvar),1) )
+
+  # cross validation
+prd_1.cv <- lda(g~x1+x2+x3+x4+x5+x6, prior = c(0.5,0.5), CV = TRUE, data = dat4.train)
+print("same var - cross vald.")
+print(prop.table(table(g = real_train, prd_1.cv$class),1))
+
+# Diff Var
+  # in-sample validation
+class_train.dfvar <- predict(prd_2, dat4.train)$class
+print("diff. var - in_sample vald.")
+print(prop.table(table(g = real_train, class_train.dfvar),1) )
+
+  # cross validation
+prd_2.cv <- qda(g~x1+x2+x3+x4+x5+x6, prior = c(0.5,0.5), CV = TRUE, data = dat4.train)
+print("diff var - cross vald.")
+print(prop.table(table(g = real_train, prd_2.cv$class),1))
+
+```
+
+检验结果如上输出所示。 由此可知，对于同方差假设，回代法检验的误判概率都为0，交叉验证的误判概率为P1|2=0.08, P2|1=0；
+对于异方差假设，回代法和交叉验证法得到的误判概率均为0.
+
+**c. 假设同方差，p1=0.8, p2=0.2，试着对这14名运动员进行Bayes判别**
+
+```{r 4c, results='hold', tidy=TRUE}
+prd_3 <- lda(g~x1+x2+x3+x4+x5+x6, prior = c(0.8,0.2), data = dat4.train)
+result <- predict(prd_3, dat4.test)$class
+cbind(id,result)
+```
+
+由上述输出可知，在考虑先验概率的条件下，一级运动员有1～8、10、13；健将级运动员有9、11、12、14.
+
+
+#### (5) 习题5.8
+
+**试给出Fisher判别函数，将所有品牌的两个判别函数得分画成散点图，用不同符号表示不同厂商**
+
+```{r 5, results='hold', tidy=TRUE}
+path5 <- "/Users/xinby/Desktop/Sufe/Multivariate-Stat-Analysis/hw2/exec5.8.xlsx"
+dat5 <- readxl::read_excel(path5)
+fisher <- lda(dat5$g ~ ., dat5)
+print(fisher$scaling)
+plot(fisher)
+
+```
+
+散点图如上图所示。第i判别函数的形式为：
+$$y_i = t_i ^T x$$
+其系数如上输出所示。在本题中，由于$k=3$，故可以参考第一、二判别函数。
