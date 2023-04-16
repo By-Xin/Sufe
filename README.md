@@ -16,7 +16,7 @@ Maybe there will also be a website storing my lecture notes, but let's just wait
 
 ---------------------------------------------------
 
-Here are some lecture notes in this rep, and more is on the way!
+Here are some offerings in this rep, and more are on the way!
 
 **MENU**
 * **Computational Statistics** 📒 _[status: course finished, upload finished]_
@@ -26,9 +26,9 @@ Here are some lecture notes in this rep, and more is on the way!
 * **Time Series Analysis (TSA)** 📝💻 _[status: course unfinished, more to come, just wait and see]_
 
 
-_📝 Assignments & projects
-📒 Notes
-💻 Codings_
+
+
+| 📝 _Assignments & Projects_ | 📒 _Notes_ | 💻 _Codings_ |
 
 
 
