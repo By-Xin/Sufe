@@ -2,7 +2,9 @@
 title: "第三次作业"
 author: "辛柏嬴 2020111753 20金统2班"
 date: "2023-03-31"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -191,7 +193,7 @@ arima(Zt,order=c(1,0,1),method='ML')
 
 **(a) 对robot 序列建立AR(1) 模型，并估计其参数；**
 ```{r 4a,warning=FALSE, results='hold', tidy=TRUE,fig.show='hold'}
-#library(TSA)
+library(TSA)
 data("robot")
 plot(robot,type='o')
 robot.ar <- arima(robot,order=c(1,0,0),method='ML')
@@ -277,5 +279,18 @@ shapiro.test(hare.ar3$residuals)
 
 该检验的输出结果如上所示，其p值显著大于5%，说明无法拒绝原假设，即可以认为残差序列是服从正态分布的。
 
+## 第六题
 
+**假定某公司的年销售额(单位:百万美元)符合 AR(2) 模型 Zt = 5 + 1.1Zt−1 − 0.5Zt−2 + at,
+i.i.d. 其中，at ∼ N (0, 2).
+(a) 如果 2005 年、2006 年和 2007 年的销售额分别是 9、11 和 10(百万美元)，预测 2008 年和 2009 年的销售额;
+(b) 证明该模型的 MA 展式中对应 ψ1 = 1.1;
+(c) 计算问题 (a) 中 2008 年的 95% 预测区间;
+(d) 如果 2008 年的销售额为 1200 万美元，更新对 2009 年的预测。**
 
+## 第七题
+
+**考虑模型:
+Zt = β0 + β1t + Xt,
+其中，Xt = φXt−1 +at，at ∼ WN(0,σa2). 假定β0，β1 和φ已知，求证:前置l期的最 小均方误差预测是
+Zˆt(l) = β0 +β1(t+l)+φl (Zt −β0 −β1t).**
