@@ -11,19 +11,24 @@ Maybe there will also be a website storing my lecture notes, but let's just wait
 ---------------------------------------------------
 **ATTENTION!**
 
-**Do not forget to go to *Wiki* to find out more!**
+**Do not forget to go to *[Wiki](https://github.com/By-Xin/Sufe/wiki)* to find out more!**
 
 
 ---------------------------------------------------
 
-Here are some lecture notes in this rep, and more is on the way!
+Here are some offerings in this rep, and more are on the way!
 
 **MENU**
-* **Computational Statistics** _[status: course finished, upload finished]_
-* **Data Structure** _[status: course finished, more notes are on the way]_
-* **Multivariate Statistics Analysis** _[status: course unfinished] (mainly some coding realization)_
-* **SAS** _[status: course finised, notes gathering]_
-* **Time Series Analysis (TSA)** _[status: course unfinished, more to come, just wait and see]_
+* **Computational Statistics** 📒 _[status: course finished, upload finished]_
+* **Data Structure** 📒 _[status: course finished, more notes are on the way]_
+* **Multivariate Statistics Analysis** 📝💻 _[status: course unfinished] (mainly some coding realization)_
+* **SAS** 📒📝💻 _[status: course finised, notes gathering]_
+* **Time Series Analysis (TSA)** 📝💻 _[status: course unfinished, more to come, just wait and see]_
+
+
+
+
+| 📝 _Assignments & Projects_ | 📒 _Notes_ | 💻 _Codings_ |
 
 
 
@@ -37,11 +42,6 @@ Here are some lecture notes in this rep, and more is on the way!
 
 
 
-
-
-
-
-
-
+------------------------------------------------------------------------
 
 ***今でもあなたは私の光。***
