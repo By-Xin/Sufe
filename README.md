@@ -11,7 +11,7 @@ Maybe there will also be a website storing my lecture notes, but let's just wait
 ---------------------------------------------------
 **ATTENTION!**
 
-**Do not forget to go to *Wiki* to find out more!**
+**Do not forget to go to *[Wiki](https://github.com/By-Xin/Sufe/wiki)* to find out more!**
 
 
 ---------------------------------------------------
