@@ -3,7 +3,7 @@ library(fUnitRoots)
 library(forecast)
 
 set.seed(123)
-
+rm(list=ls())
 ######################################################################################
 
 # 1. Load Data
@@ -59,15 +59,15 @@ qqnorm(IP, main="Q-Q plot"); qqline(IP)
 
   ## AR(2)
 
-  ar2.ml <- TSA::arima(x = diff(IP), order = c(2,0,0), method = "ML") 
+  ar2.ml <- TSA::arima(x = (IP), order = c(2,1,0), method = "ML") 
     #---According to MLE, AR(2): Y_t = 0.0603 Y_t-1 - 0.3674 Y_t-2 + 21.9938 + a_t ---#
-  ar2.css <- TSA::arima(x = diff(IP), order = c(2,0,0), method = "CSS")
+  ar2.css <- TSA::arima(x = (IP), order = c(2,1,0), method = "CSS")
     #---According to CSS, AR(2): Y_t = 0.0555 Y_t-1 - 0.3730 Y_t-2 + 22.5603 + a_t ---#
 
   ## MA(2)
-  ma2.ml <- TSA::arima(x = diff(IP), order = c(0,0,2), method = "ML")
+  ma2.ml <- TSA::arima(x = (IP), order = c(0,1,2), method = "ML")
     #---According to MLE, MA(2): Y_t = -0.0659 a_t-1 - 0.4823 a_t-2 + 22.0447 + a_t ---#
-  ma2.css <- TSA::arima(x = diff(IP), order = c(0,0,2), method = "CSS")
+  ma2.css <- TSA::arima(x = (IP), order = c(0,1,2), method = "CSS")
     #---According to CSS, MA(2): Y_t = -0.0433 a_t-1 - 0.4775 a_t-2 + 21.8382 + a_t ---#
   
 
@@ -103,28 +103,19 @@ qqnorm(IP, main="Q-Q plot"); qqline(IP)
 ######################################################################################
   
 # 6. Model Prediction
-
-
   
   ## MA(2)
   tprd_ma2.ml <- predict(ma2.ml, n.ahead = 3)$pred
-  prd_ma2.ml[1] <- IP[44] + tprd_ma2.ml[1]
-  for (yr in 2:3){
-     prd_ma2.ml[yr] <- prd_ma2.ml[yr-1] + tprd_ma2.ml[yr]
-  }
-  
-  
-  
   tprd_ma2.css <- predict(ma2.css, n.ahead = 3)
   
   
-  plot(forecast::forecast(dIP,h=3, model=ma2.ml),xlab='Time',ylab='diff(IP)')
+  plot(forecast::forecast(IP,h=3, model=ma2.ml),xlab='Time',ylab='diff(IP)')
   
   
   ## AR(2)
-  prd_ar2.ml <- predict(ar2.ml, n.ahead = 3)
-  plot(forecast::forecast(dIP,h=3, model=ar2.ml),xlab='Time',ylab='diff(IP)')
-  prd_ma2.css <- predict(ar2.css, n.ahead = 3)
+  prd_ar2.ml <- predict(ar2.ml, n.ahead = 3)$pred
+  plot(forecast::forecast(IP,h=3, model=ar2.css),xlab='Time',ylab='diff(IP)')
+  prd_ma2.css <- predict(ar2.css, n.ahead = 3)$pred
 
   
   
