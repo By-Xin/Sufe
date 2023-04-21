@@ -1,10 +1,11 @@
 library(TSA)
 library(fUnitRoots)
 library(forecast)
+library(modelr)
 
 set.seed(123)
 
-######################################################################################
+###################################################################
 
 # 1. Load Data
 rm(list=ls())
@@ -12,11 +13,10 @@ setwd("/Users/xinby/Desktop/Sufe/TSA/ts_proj1/TS_proj1")
 dat <- readxl::read_excel("car.xlsx")
 
 CarSale <- ts(dat, start = 1976, end = 2019)
-CarSale.train <- CarSale[1:41]
-CarSale.test <- CarSale[42:44]
+CarSale.train <- ts(CarSale[1:41],start=1976)
+CarSale.test <- ts(CarSale[42:44],start=2017)
 
-######################################################################################
-
+###################################################################
 # 2. Description
 
 plot(CarSale,type='o',ylab="Car Sales (in thousand units)",
@@ -24,7 +24,7 @@ plot(CarSale,type='o',ylab="Car Sales (in thousand units)",
 qqnorm(CarSale, main="Q-Q plot to Annual Sales"); qqline(CarSale)
 
 
-######################################################################################
+###################################################################
 
 # 3. Stationary Test
 
@@ -43,88 +43,105 @@ pacf(diff.CarSale,xaxp=c(0,20,10),lag.max=20,main="PACF") # pacf: suggest AR(3)
 
 eacf(diff.CarSale) # eacf: poor performance
 
-#--------Conclusion: suggest AR(2) or MA(2) --------#
 
 ## diff(log(car))
 
 diff.log.CarSale <- diff(log(CarSale)) # get log diff data
 
+par(mfrow=c(1,1))
 plot(diff.log.CarSale,type = 'o',
      main="Annual Car Sales Logrithm Growth",
      ylab = "Annual Logrithm Growth (in thousand units)") # plot
 
 adfTest(diff.log.CarSale,lags = 0,type='nc') #adf test
 
-#--------Conclusion: White Noise. log diff not applicable. --------#
 
-######################################################################################
+###################################################################
 
 # 4. Parameter Estimation
 
 ## ARI(3,1)
 
-ari31.ml <- TSA::arima(x = (CarSale), order = c(3,1,0), method = "ML") 
+ari31.ml <- TSA::arima(x = (CarSale.train), order = c(3,1,0), method = "ML") 
+ari31.css <- TSA::arima(x = (CarSale.train), order = c(3,1,0), method = "CSS") 
+
 ari31.ml
+ari31.css
+
+BIC(ari31.ml)
 
 ## IMA(1,1)
-ima11.ml <- TSA::arima(x = (CarSale), order = c(0,1,1), method = "ML")
+ima11.ml <- TSA::arima(x = (CarSale.train), order = c(0,1,1), method = "ML")
+ima11.css <- TSA::arima(x = (CarSale.train), order = c(0,1,1), method = "CSS")
+
 ima11.ml
+ima11.css
 
-
-
-######################################################################################
+###################################################################
 
 # 5. Model Diagnosis
 
-## MA(2)
-plot(rstandard(ma2.ml),ylab='Standardized residuals',type='o', main = "MA(2) Residual") # residual plot
-hist(residuals(ma2.ml), xlab='Residuals', main='Histogram') # residual histogram
-qqnorm(residuals(ma2.ml), main='Q-Q plot'); qqline(residuals(ma2.ml)) #residual qqplot
-shapiro.test(rstandard(ma2.ml)) # shapiro Normality test
-acf(as.numeric(rstandard(ma2.ml)), xaxp = c(0,24,12), main = "")
-Box.test(rstandard(ma2.ml), lag = 6, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ma2.ml), lag = 12, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ma2.ml), lag = 18, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ma2.ml), lag = 24, type = "Ljung-Box", fitdf = 1)
-tsdiag(ma2.ml,gof=15,omit.initial=F)
-
-## AR(2)
-plot(rstandard(ar2.ml),ylab='Standardized residuals',type='o', main = "ARI(3,1) Residual")
+## IMA(1,1)
+par(mfrow=c(1,1))
+plot(rstandard(ima11.ml),ylab='Standardized residuals',type='o', main = "IMA(1,1) Residual") # residual plot
 
 par(mfrow=c(1,2))
-hist(residuals(ar2.ml), xlab='Residuals', main='Histogram') # residual histogram
-qqnorm(residuals(ar2.ml), main='Q-Q plot'); qqline(residuals(ar2.ml)) #residual qqplot
+hist(residuals(ima11.ml), xlab='Residuals', main='Histogram') # residual histogram
+qqnorm(residuals(ima11.ml), main='Q-Q plot'); qqline(residuals(ima11.ml)) #residual qqplot
+
+par(mfrow=c(1,1))
+shapiro.test(rstandard(ima11.ml)) # shapiro Normality test
+acf(as.numeric(rstandard(ima11.ml)), xaxp = c(0,24,12), main = "")
+Box.test(rstandard(ima11.ml), lag = 6, type = "Ljung-Box", fitdf = 1)
+Box.test(rstandard(ima11.ml), lag = 12, type = "Ljung-Box", fitdf = 1)
+Box.test(rstandard(ima11.ml), lag = 18, type = "Ljung-Box", fitdf = 1)
+Box.test(rstandard(ima11.ml), lag = 24, type = "Ljung-Box", fitdf = 1)
+tsdiag(ima11.ml,gof=15,omit.initial=F)
+
+## ARI(3,1)
+plot(rstandard(ari31.ml),ylab='Standardized residuals',type='o', main = "ARI(3,1) Residual")
+
+par(mfrow=c(1,2))
+hist(residuals(ari31.ml), xlab='Residuals', main='Histogram') # residual histogram
+qqnorm(residuals(ari31.ml), main='Q-Q plot'); qqline(residuals(ari31.ml)) #residual qqplot
+par(mfrow=c(1,1))
+
+shapiro.test(rstandard(ari31.ml))
+
+acf(as.numeric(rstandard(ari31.ml)), xaxp = c(0,24,12), main = "")
+Box.test(rstandard(ari31.ml), lag = 6, type = "Ljung-Box", fitdf = 1)
+Box.test(rstandard(ari31.ml), lag = 12, type = "Ljung-Box", fitdf = 1)
+Box.test(rstandard(ari31.ml), lag = 18, type = "Ljung-Box", fitdf = 1)
+Box.test(rstandard(ari31.ml), lag = 24, type = "Ljung-Box", fitdf = 1)
+tsdiag(ari31.ml,gof=15,omit.initial=F)
 
 
-shapiro.test(rstandard(ar2.ml))
-acf(as.numeric(rstandard(ar2.ml)), xaxp = c(0,24,12), main = "")
-Box.test(rstandard(ar2.ml), lag = 6, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ar2.ml), lag = 12, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ar2.ml), lag = 18, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ar2.ml), lag = 24, type = "Ljung-Box", fitdf = 1)
-tsdiag(ar2.ml,gof=15,omit.initial=F)
+###################################################################
 
+# 6. Model Comparison & Prediction
 
-######################################################################################
+## Comparison
+  ## IMA(1,1)
+  ima11.ml
+  ima <- forecast(CarSale.train, h=3, model =ima11.ml)
+  summary(ima)
+  ## ARI(1,3) 
+  ari31.ml
+  ari <- forecast(CarSale.train, h=3, model =ari31.ml)
+  summary(ari)
 
-# 6. Model Prediction
+## ARI prediction
 
-## MA(2)
-tprd_ma2.ml <- predict(ma2.ml, n.ahead = 3)$pred
-tprd_ma2.css <- predict(ma2.css, n.ahead = 3)
+sale_pred <- forecast::forecast(CarSale.train,h=3, model=ari31.ml,
+                                xlab='Year',ylab='Car Sale (in thousand units)')
+sale_pred
+predict(ari31.ml,n.ahead=3)
+CarSale.test
+plot(sale_pred)
 
+accuracy(sale_pred,CarSale.test)
 
-plot(forecast::forecast(CarSale,h=3, model=ma2.ml),xlab='Time',ylab='diff(IP)')
-
-
-## AR(2)
-prd_ar2.ml <- predict(ar2.ml, n.ahead = 3)
-plot(forecast::forecast(CarSale,h=3, model=ar2.ml),xlab='Time',ylab='diff(IP)')
-prd_ma2.css <- predict(ar2.css, n.ahead = 3)
-
-
-
-######################################################################################
+###################################################################
 
 # 目前存在的问题：
 
