@@ -35,7 +35,8 @@ diff.CarSale <- diff(CarSale) # get diff data
 plot(diff.CarSale,type = 'o',main="Car Sales Annual Growth",
      ylab = "Annual Growth (in thousand units)") # plot
 
-adfTest(diff.CarSale,lags=3,type='nc') # adf test
+adfTest(diff.CarSale, lags = 3, type='nc')
+adfTest(diff.CarSale,lags=9,type='nc') # adf test with lag=9
 
 par(mfrow=c(1,2))
 acf(diff.CarSale,xaxp=c(0,20,10),lag.max=20,main="ACF",ci.type='ma') # acf: suggest MA(1)
@@ -53,8 +54,11 @@ plot(diff.log.CarSale,type = 'o',
      main="Annual Car Sales Logrithm Growth",
      ylab = "Annual Logrithm Growth (in thousand units)") # plot
 
-adfTest(diff.log.CarSale,lags = 0,type='nc') #adf test
 
+
+adfTest(diff.log.CarSale,lags = 9,type='nc') #adf test
+
+AIC(demo)
 
 ###################################################################
 
@@ -92,11 +96,11 @@ qqnorm(residuals(ima11.ml), main='Q-Q plot'); qqline(residuals(ima11.ml)) #resid
 par(mfrow=c(1,1))
 shapiro.test(rstandard(ima11.ml)) # shapiro Normality test
 acf(as.numeric(rstandard(ima11.ml)), xaxp = c(0,24,12), main = "")
-Box.test(rstandard(ima11.ml), lag = 6, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ima11.ml), lag = 12, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ima11.ml), lag = 18, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ima11.ml), lag = 24, type = "Ljung-Box", fitdf = 1)
-tsdiag(ima11.ml,gof=15,omit.initial=F)
+Box.test(rstandard(ima11.ml), lag = 6, type = "Ljung-Box", fitdf = 2)
+Box.test(rstandard(ima11.ml), lag = 12, type = "Ljung-Box", fitdf = 2)
+Box.test(rstandard(ima11.ml), lag = 18, type = "Ljung-Box", fitdf = 2)
+Box.test(rstandard(ima11.ml), lag = 24, type = "Ljung-Box", fitdf = 2)
+tsdiag(ima11.ml,gof=15,omit.initial=F, dof = 20)
 
 ## ARI(3,1)
 plot(rstandard(ari31.ml),ylab='Standardized residuals',type='o', main = "ARI(3,1) Residual")
@@ -109,10 +113,10 @@ par(mfrow=c(1,1))
 shapiro.test(rstandard(ari31.ml))
 
 acf(as.numeric(rstandard(ari31.ml)), xaxp = c(0,24,12), main = "")
-Box.test(rstandard(ari31.ml), lag = 6, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ari31.ml), lag = 12, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ari31.ml), lag = 18, type = "Ljung-Box", fitdf = 1)
-Box.test(rstandard(ari31.ml), lag = 24, type = "Ljung-Box", fitdf = 1)
+Box.test(rstandard(ari31.ml), lag = 6, type = "Ljung-Box", fitdf = 4)
+Box.test(rstandard(ari31.ml), lag = 12, type = "Ljung-Box", fitdf = 4)
+Box.test(rstandard(ari31.ml), lag = 18, type = "Ljung-Box", fitdf = 4)
+Box.test(rstandard(ari31.ml), lag = 24, type = "Ljung-Box", fitdf = 4)
 tsdiag(ari31.ml,gof=15,omit.initial=F)
 
 
