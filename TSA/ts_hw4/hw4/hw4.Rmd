@@ -1,0 +1,279 @@
+---
+title: "ts_hw4"
+author: "辛柏嬴"
+date: "2023-04-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(TSA)
+library(ggplot2)
+library(forecast)
+```
+
+### 第一题
+
+**模拟一个MA(2)模型**
+
+#### (a) 计算极大似然估计
+```{r 1a, results='hold'}
+rm(list=ls())
+# generate random MA(2) data
+set.seed(10)
+ma_order <- 2
+theta_1 <- 1
+theta_2 <- -0.6
+mu <- 100
+offset <- 100
+len <- 36
+dat_raw <- arima.sim(n = len+offset, 
+                     list(ma = c(theta_1,theta_2)),
+                     innov = rnorm(len+offset))+mu
+ar2dat <- ts(dat_raw[(offset+1):(offset+len)])
+indat <- ts(ar2dat[1:32])
+outdat <- ts(ar2dat[33:36],start=33)
+# MLE
+ar.mle <- TSA::arima(indat, order=c(0,0,2),method='ML',include.mean = TRUE)
+ar.mle
+```
+
+通过上述输出可以看到，极大似然估计的结果分别为0.1741,-0.3925,100.0482
+
+
+#### (b) 预测并绘图
+```{r 1b, results='hold'}
+ar.mle.pred <- forecast(indat,model=ar.mle,h=4)
+pred <- data.frame(dat=as.matrix(ar.mle.pred$mean))
+indat.df <- data.frame(dat=as.matrix(indat))
+mix <- rbind(indat.df,pred)
+ggplot()+
+  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:32)),size=2)+
+  theme_bw()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=21,size=2)+
+  geom_line(data=mix, mapping=aes(y=dat,x=c(1:36)),size=0.8)+
+  labs(x = "time", y = "data")+
+  geom_hline(yintercept=mean(mix$dat),color='red',linetype="dashed",size=1)+
+  ggtitle("Result for Simulation1")
+  
+print(ar.mle.pred$mean)
+```
+预测值以及绘制的时间序列图如上所示。
+
+#### (c) 第三、四个预测值有什么特别之处？
+
+第三四个预测值都是相同的，并且都落在了数据的均值水平线上。
+
+#### (d) 将最后四个预测值与真实值进行比较，计算MSE与MAE
+```{r 1d, results='hold'}
+accuracy(ar.mle.pred$mean,outdat)
+```
+
+MSE与MAE的输出如上所示，分别为1.304165，1.139847 
+
+#### (e) 画出预测区间，真实值是否在该区间内？
+```{r 1e, results='hold'}
+low <- data.frame(dat=ar.mle.pred$lower[,2])
+high <- data.frame(dat=ar.mle.pred$upper[,2])
+out <- data.frame(dat=outdat)
+ggplot()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=20,size=2)+
+  geom_line(data=pred,mapping=aes(y=dat,x=c(33:36)),linetype="solid")+
+  geom_point(data=low,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
+  geom_line(data=low,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
+  geom_point(data=high,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
+  geom_line(data=high,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(33:36)),linetype="longdash",size=1,color='blue')+
+  geom_point(data=out,mapping=aes(y=dat,x=c(33:36)),shape=2,size=2)+
+  labs(x = "time", y = "data")+
+  theme_bw()+
+  ggtitle("Result for Simulation1")
+```
+结果如上图所示，红色点线区间为95%的预测区间，黑色直线为预测值，蓝色长虚线为真实值。由此可见，真实值处在95%的预测区间内。
+
+#### (f) 更改随机数种子，重复该过程
+
+```{r 1f,results='hold'}
+rm(list=ls())
+# generate random MA(2) data
+set.seed(12345)
+ma_order <- 2
+theta_1 <- 1
+theta_2 <- -0.6
+mu <- 100
+offset <- 100
+len <- 36
+dat_raw <- arima.sim(n = len+offset, 
+                     list(ma = c(theta_1,theta_2)),
+                     innov = rnorm(len+offset))+mu
+ar2dat <- ts(dat_raw[(offset+1):(offset+len)])
+indat <- ts(ar2dat[1:32])
+outdat <- ts(ar2dat[33:36],start=33)
+# MLE
+ar.mle <- TSA::arima(indat, order=c(0,0,2),method='ML',include.mean = TRUE)
+print(ar.mle)
+
+#predict
+ar.mle.pred <- forecast(indat,model=ar.mle,h=4)
+pred <- data.frame(dat=as.matrix(ar.mle.pred$mean))
+indat.df <- data.frame(dat=as.matrix(indat))
+mix <- rbind(indat.df,pred)
+ggplot()+
+  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:32)),size=2)+
+  theme_bw()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=21,size=2)+
+  geom_line(data=mix, mapping=aes(y=dat,x=c(1:36)),size=0.8)+
+  labs(x = "time", y = "data")+
+  geom_hline(yintercept=mean(mix$dat),color='red',linetype="dashed",size=1)
+  
+print(ar.mle.pred$mean)
+
+print(accuracy(ar.mle.pred$mean,outdat))
+
+low <- data.frame(dat=ar.mle.pred$lower[,2])
+high <- data.frame(dat=ar.mle.pred$upper[,2])
+out <- data.frame(dat=outdat)
+ggplot()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=20,size=2)+
+  geom_line(data=pred,mapping=aes(y=dat,x=c(33:36)),linetype="solid")+
+  geom_point(data=low,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
+  geom_line(data=low,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
+  geom_point(data=high,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
+  geom_line(data=high,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(33:36)),linetype="longdash",size=1,color='blue')+
+  geom_point(data=out,mapping=aes(y=dat,x=c(33:36)),shape=2,size=2)+
+  labs(x = "time", y = "data")+
+  theme_bw()+
+  ggtitle("Result for Simulation2")
+
+low <- data.frame(dat=ar.mle.pred$lower[,2])
+high <- data.frame(dat=ar.mle.pred$upper[,2])
+out <- data.frame(dat=outdat)
+ggplot()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=20,size=2)+
+  geom_line(data=pred,mapping=aes(y=dat,x=c(33:36)),linetype="solid")+
+  geom_point(data=low,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
+  geom_line(data=low,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
+  geom_point(data=high,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
+  geom_line(data=high,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(33:36)),linetype="longdash",size=1,color='blue')+
+  geom_point(data=out,mapping=aes(y=dat,x=c(33:36)),shape=2,size=2)+
+  labs(x = "time", y = "data")+
+  theme_bw()+
+  ggtitle("Result for Simulation2")
+```
+本次模拟的具体预测数值及MSE、MAE等见上述输出。从图中可以看出真实值稍有偏差95%的估计区间之外。但第三四次的预测值仍然是在水平均值上，该规律没有改变。
+
+### 第二题
+
+**模拟一个ARIMA(1,1)模型**
+
+#### (a) 计算极大似然估计
+```{r 1a, results='hold'}
+rm(list=ls())
+# generate random MA(2) data
+set.seed(100)
+offset <- 200
+len <- 50
+mu <- 100
+dat_raw <- arima.sim(n = len+offset, 
+                     list(ma = c(-0.5),ar=c(0.7)),
+                     innov = rnorm(len+offset))+mu
+arimadat <- ts(dat_raw[(offset+1):(offset+len)])
+indat <- ts(arimadat[1:45])
+outdat <- ts(arimadat[46:50],start=46)
+# MLE
+fit <- TSA::arima(indat, order=c(1,0,1),method='ML',include.mean = TRUE)
+fit
+```
+
+#### (b) 预测并绘图
+```{r 2b, results='hold'}
+mle.pred <- forecast(indat,model=fit,h=5)
+pred <- data.frame(dat=as.matrix(mle.pred$mean))
+indat.df <- data.frame(dat=as.matrix(indat))
+mix <- rbind(indat.df,pred)
+ggplot()+
+  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:45)),size=2)+
+  theme_bw()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),shape=21,size=2)+
+  geom_line(data=mix, mapping=aes(y=dat,x=c(1:50)),size=0.8)+
+  labs(x = "time", y = "data")+
+  geom_hline(yintercept=mean(mix$dat),color='red',linetype="dashed",size=1)+
+  ggtitle("Result for Simulation1")
+  
+print(mle.pred$mean)
+```
+
+#### (c) 将最后四个预测值与真实值进行比较，计算MSE与MAE
+```{r 2c, results='hold'}
+accuracy(mle.pred$mean,outdat)
+```
+
+#### (d) 画出预测区间，真实值是否在该区间内？
+```{r 2d, results='hold'}
+low <- data.frame(dat=mle.pred$lower[,2])
+high <- data.frame(dat=mle.pred$upper[,2])
+out <- data.frame(dat=outdat)
+ggplot()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),shape=20,size=2)+
+  geom_line(data=pred,mapping=aes(y=dat,x=c(46:50)),linetype="solid")+
+  geom_point(data=low,mapping=aes(y=dat,x=c(46:50)),shape=1,size=2)+
+  geom_line(data=low,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",size=1,color='red')+
+  geom_point(data=high,mapping=aes(y=dat,x=c(46:50)),shape=1,size=2)+
+  geom_line(data=high,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",size=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(46:50)),linetype="longdash",size=1,color='blue')+
+  geom_point(data=out,mapping=aes(y=dat,x=c(46:50)),shape=2,size=2)+
+  labs(x = "time", y = "data")+
+  theme_bw()+
+  ggtitle("Result for Simulation1")
+```
+
+#### (e) 更改随机数种子，重复该过程
+```{r 2e}
+rm(list=ls())
+# generate random MA(2) data
+set.seed(999)
+offset <- 200
+len <- 50
+mu <- 100
+dat_raw <- arima.sim(n = len+offset, 
+                     list(ma = c(-0.5),ar=c(0.7)),
+                     innov = rnorm(len+offset))+mu
+arimadat <- ts(dat_raw[(offset+1):(offset+len)])
+indat <- ts(arimadat[1:45])
+outdat <- ts(arimadat[46:50],start=46)
+# MLE
+fit <- TSA::arima(indat, order=c(1,0,1),method='ML',include.mean = TRUE)
+print(fit)
+mle.pred <- forecast(indat,model=fit,h=5)
+pred <- data.frame(dat=as.matrix(mle.pred$mean))
+indat.df <- data.frame(dat=as.matrix(indat))
+mix <- rbind(indat.df,pred)
+ggplot()+
+  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:45)),size=2)+
+  theme_bw()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),shape=21,size=2)+
+  geom_line(data=mix, mapping=aes(y=dat,x=c(1:50)),size=0.8)+
+  labs(x = "time", y = "data")+
+  geom_hline(yintercept=mean(mix$dat),color='red',linetype="dashed",size=1)+
+  ggtitle("Result for Simulation2")
+  
+print(mle.pred$mean)
+print(accuracy(mle.pred$mean,outdat))
+low <- data.frame(dat=mle.pred$lower[,2])
+high <- data.frame(dat=mle.pred$upper[,2])
+out <- data.frame(dat=outdat)
+ggplot()+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),shape=20,size=2)+
+  geom_line(data=pred,mapping=aes(y=dat,x=c(46:50)),linetype="solid")+
+  geom_point(data=low,mapping=aes(y=dat,x=c(46:50)),shape=1,size=2)+
+  geom_line(data=low,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",size=1,color='red')+
+  geom_point(data=high,mapping=aes(y=dat,x=c(46:50)),shape=1,size=2)+
+  geom_line(data=high,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",size=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(46:50)),linetype="longdash",size=1,color='blue')+
+  geom_point(data=out,mapping=aes(y=dat,x=c(46:50)),shape=2,size=2)+
+  labs(x = "time", y = "data")+
+  theme_bw()+
+  ggtitle("Result for Simulation2")
+```
