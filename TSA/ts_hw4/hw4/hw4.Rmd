@@ -1,6 +1,6 @@
 ---
-title: "ts_hw4"
-author: "辛柏嬴"
+title: "时间序列分析 第四次作业"
+author: "辛柏嬴 2020111753"
 date: "2023-04-29"
 output: html_document
 ---
@@ -48,21 +48,26 @@ pred <- data.frame(dat=as.matrix(ar.mle.pred$mean))
 indat.df <- data.frame(dat=as.matrix(indat))
 mix <- rbind(indat.df,pred)
 ggplot()+
-  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:32)),size=2)+
+  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:32)),
+             size=1)+
   theme_bw()+
-  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=21,size=2)+
-  geom_line(data=mix, mapping=aes(y=dat,x=c(1:36)),size=0.8)+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),
+             shape=21,size=1.2)+
+  geom_line(data=mix, mapping=aes(y=dat,x=c(1:36)),
+            linewidth=0.6)+
   labs(x = "time", y = "data")+
-  geom_hline(yintercept=mean(mix$dat),color='red',linetype="dashed",size=1)+
+  geom_hline(yintercept=mean(mix$dat),
+             color='red',linetype="dashed",linewidth=0.8)+
   ggtitle("Result for Simulation1")
   
 print(ar.mle.pred$mean)
 ```
+
 预测值以及绘制的时间序列图如上所示。
 
 #### (c) 第三、四个预测值有什么特别之处？
 
-第三四个预测值都是相同的，并且都落在了数据的均值水平线上。
+第三四个预测值都是相同的，并且都基本落在了数据的均值水平线上。
 
 #### (d) 将最后四个预测值与真实值进行比较，计算MSE与MAE
 ```{r 1d, results='hold'}
@@ -77,18 +82,27 @@ low <- data.frame(dat=ar.mle.pred$lower[,2])
 high <- data.frame(dat=ar.mle.pred$upper[,2])
 out <- data.frame(dat=outdat)
 ggplot()+
-  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=20,size=2)+
-  geom_line(data=pred,mapping=aes(y=dat,x=c(33:36)),linetype="solid")+
-  geom_point(data=low,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
-  geom_line(data=low,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
-  geom_point(data=high,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
-  geom_line(data=high,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
-  geom_line(data=out,mapping=aes(y=dat,x=c(33:36)),linetype="longdash",size=1,color='blue')+
-  geom_point(data=out,mapping=aes(y=dat,x=c(33:36)),shape=2,size=2)+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),
+             shape=20,size=2)+
+  geom_line(data=pred,mapping=aes(y=dat,x=c(33:36)),
+            linetype="solid")+
+  geom_point(data=low,mapping=aes(y=dat,x=c(33:36)),
+             shape=1,size=2)+
+  geom_line(data=low,mapping=aes(y=dat,x=c(33:36)),
+            linetype="twodash",linewidth=1,color='red')+
+  geom_point(data=high,mapping=aes(y=dat,x=c(33:36)),
+             shape=1,size=2)+
+  geom_line(data=high,mapping=aes(y=dat,x=c(33:36)),
+            linetype="twodash",linewidth=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(33:36)),
+            linetype="longdash",linewidth=1,color='blue')+
+  geom_point(data=out,mapping=aes(y=dat,x=c(33:36)),
+             shape=2,size=2)+
   labs(x = "time", y = "data")+
   theme_bw()+
   ggtitle("Result for Simulation1")
 ```
+
 结果如上图所示，红色点线区间为95%的预测区间，黑色直线为预测值，蓝色长虚线为真实值。由此可见，真实值处在95%的预测区间内。
 
 #### (f) 更改随机数种子，重复该过程
@@ -119,12 +133,16 @@ pred <- data.frame(dat=as.matrix(ar.mle.pred$mean))
 indat.df <- data.frame(dat=as.matrix(indat))
 mix <- rbind(indat.df,pred)
 ggplot()+
-  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:32)),size=2)+
+  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:32)),
+             size=1)+
   theme_bw()+
-  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=21,size=2)+
-  geom_line(data=mix, mapping=aes(y=dat,x=c(1:36)),size=0.8)+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),
+             shape=21,size=1.2)+
+  geom_line(data=mix, mapping=aes(y=dat,x=c(1:36)),
+            linewidth=0.6)+
   labs(x = "time", y = "data")+
-  geom_hline(yintercept=mean(mix$dat),color='red',linetype="dashed",size=1)
+  geom_hline(yintercept=mean(mix$dat),
+             color='red',linetype="dashed",linewidth=0.6)
   
 print(ar.mle.pred$mean)
 
@@ -134,42 +152,36 @@ low <- data.frame(dat=ar.mle.pred$lower[,2])
 high <- data.frame(dat=ar.mle.pred$upper[,2])
 out <- data.frame(dat=outdat)
 ggplot()+
-  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=20,size=2)+
-  geom_line(data=pred,mapping=aes(y=dat,x=c(33:36)),linetype="solid")+
-  geom_point(data=low,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
-  geom_line(data=low,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
-  geom_point(data=high,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
-  geom_line(data=high,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
-  geom_line(data=out,mapping=aes(y=dat,x=c(33:36)),linetype="longdash",size=1,color='blue')+
-  geom_point(data=out,mapping=aes(y=dat,x=c(33:36)),shape=2,size=2)+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),
+             shape=20,size=2)+
+  geom_line(data=pred,mapping=aes(y=dat,x=c(33:36)),
+            linetype="solid")+
+  geom_point(data=low,mapping=aes(y=dat,x=c(33:36)),
+             shape=1,size=2)+
+  geom_line(data=low,mapping=aes(y=dat,x=c(33:36)),
+            linetype="twodash",linewidth=1,color='red')+
+  geom_point(data=high,mapping=aes(y=dat,x=c(33:36)),
+             shape=1,size=2)+
+  geom_line(data=high,mapping=aes(y=dat,x=c(33:36)),
+            linetype="twodash",linewidth=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(33:36)),
+            linetype="longdash",linewidth=1,color='blue')+
+  geom_point(data=out,mapping=aes(y=dat,x=c(33:36)),
+             shape=2,size=2)+
   labs(x = "time", y = "data")+
   theme_bw()+
   ggtitle("Result for Simulation2")
 
-low <- data.frame(dat=ar.mle.pred$lower[,2])
-high <- data.frame(dat=ar.mle.pred$upper[,2])
-out <- data.frame(dat=outdat)
-ggplot()+
-  geom_point(data=pred,mapping=aes(y=dat,x=c(33:36)),shape=20,size=2)+
-  geom_line(data=pred,mapping=aes(y=dat,x=c(33:36)),linetype="solid")+
-  geom_point(data=low,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
-  geom_line(data=low,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
-  geom_point(data=high,mapping=aes(y=dat,x=c(33:36)),shape=1,size=2)+
-  geom_line(data=high,mapping=aes(y=dat,x=c(33:36)),linetype="twodash",size=1,color='red')+
-  geom_line(data=out,mapping=aes(y=dat,x=c(33:36)),linetype="longdash",size=1,color='blue')+
-  geom_point(data=out,mapping=aes(y=dat,x=c(33:36)),shape=2,size=2)+
-  labs(x = "time", y = "data")+
-  theme_bw()+
-  ggtitle("Result for Simulation2")
 ```
-本次模拟的具体预测数值及MSE、MAE等见上述输出。从图中可以看出真实值稍有偏差95%的估计区间之外。但第三四次的预测值仍然是在水平均值上，该规律没有改变。
+
+本次模拟的具体预测数值及MSE、MAE等见上述输出。从图中可以看出真实值稍有偏差95%的估计区间之外。但第三四次的预测值仍基本落在水平均值上，该规律没有改变。
 
 ### 第二题
 
 **模拟一个ARIMA(1,1)模型**
 
 #### (a) 计算极大似然估计
-```{r 1a, results='hold'}
+```{r 2a, results='hold'}
 rm(list=ls())
 # generate random MA(2) data
 set.seed(100)
@@ -194,12 +206,16 @@ pred <- data.frame(dat=as.matrix(mle.pred$mean))
 indat.df <- data.frame(dat=as.matrix(indat))
 mix <- rbind(indat.df,pred)
 ggplot()+
-  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:45)),size=2)+
+  geom_point(data=indat.df,mapping = aes(y=dat,x=c(1:45)),
+             size=2)+
   theme_bw()+
-  geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),shape=21,size=2)+
-  geom_line(data=mix, mapping=aes(y=dat,x=c(1:50)),size=0.8)+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),
+             shape=21,size=2)+
+  geom_line(data=mix, mapping=aes(y=dat,x=c(1:50)),
+            size=0.8)+
   labs(x = "time", y = "data")+
-  geom_hline(yintercept=mean(mix$dat),color='red',linetype="dashed",size=1)+
+  geom_hline(yintercept=mean(mix$dat),
+             color='red',linetype="dashed",size=1)+
   ggtitle("Result for Simulation1")
   
 print(mle.pred$mean)
@@ -216,14 +232,22 @@ low <- data.frame(dat=mle.pred$lower[,2])
 high <- data.frame(dat=mle.pred$upper[,2])
 out <- data.frame(dat=outdat)
 ggplot()+
-  geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),shape=20,size=2)+
-  geom_line(data=pred,mapping=aes(y=dat,x=c(46:50)),linetype="solid")+
-  geom_point(data=low,mapping=aes(y=dat,x=c(46:50)),shape=1,size=2)+
-  geom_line(data=low,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",size=1,color='red')+
-  geom_point(data=high,mapping=aes(y=dat,x=c(46:50)),shape=1,size=2)+
-  geom_line(data=high,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",size=1,color='red')+
-  geom_line(data=out,mapping=aes(y=dat,x=c(46:50)),linetype="longdash",size=1,color='blue')+
-  geom_point(data=out,mapping=aes(y=dat,x=c(46:50)),shape=2,size=2)+
+  geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),
+             shape=20,size=2)+
+  geom_line(data=pred,mapping=aes(y=dat,x=c(46:50)),
+            linetype="solid")+
+  geom_point(data=low,mapping=aes(y=dat,x=c(46:50)),
+             shape=1,size=2)+
+  geom_line(data=low,mapping=aes(y=dat,x=c(46:50)),
+            linetype="twodash",size=1,color='red')+
+  geom_point(data=high,mapping=aes(y=dat,x=c(46:50)),
+             shape=1,size=2)+
+  geom_line(data=high,mapping=aes(y=dat,x=c(46:50)),
+            linetype="twodash",size=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(46:50)),
+            linetype="longdash",size=1,color='blue')+
+  geom_point(data=out,mapping=aes(y=dat,x=c(46:50)),
+             shape=2,size=2)+
   labs(x = "time", y = "data")+
   theme_bw()+
   ggtitle("Result for Simulation1")
@@ -268,12 +292,142 @@ ggplot()+
   geom_point(data=pred,mapping=aes(y=dat,x=c(46:50)),shape=20,size=2)+
   geom_line(data=pred,mapping=aes(y=dat,x=c(46:50)),linetype="solid")+
   geom_point(data=low,mapping=aes(y=dat,x=c(46:50)),shape=1,size=2)+
-  geom_line(data=low,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",size=1,color='red')+
+  geom_line(data=low,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",
+            size=1,color='red')+
   geom_point(data=high,mapping=aes(y=dat,x=c(46:50)),shape=1,size=2)+
-  geom_line(data=high,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",size=1,color='red')+
-  geom_line(data=out,mapping=aes(y=dat,x=c(46:50)),linetype="longdash",size=1,color='blue')+
+  geom_line(data=high,mapping=aes(y=dat,x=c(46:50)),linetype="twodash",
+            size=1,color='red')+
+  geom_line(data=out,mapping=aes(y=dat,x=c(46:50)),linetype="longdash",
+            size=1,color='blue')+
   geom_point(data=out,mapping=aes(y=dat,x=c(46:50)),shape=2,size=2)+
   labs(x = "time", y = "data")+
   theme_bw()+
   ggtitle("Result for Simulation2")
+```
+
+
+### 第三题
+
+#### (a) 用IMA(1,1)预测未来3个时刻的值，计算95%区间
+```{r 4a, results='hold'}
+rm(list=ls())
+data("robot")
+robot.inner <- ts(robot[1:321],start=1)
+robot.outer <- ts(robot[322:324],start=322)
+fit.ima <- TSA::arima(robot.inner,order = c(0,1,1),
+                      include.mean = TRUE, method = "ML")
+robot.pred <- forecast(model = fit.ima,robot.inner,h=3)
+robot.pred$mean
+robot.pred$lower[,2]
+robot.pred$upper[,2]
+```
+
+#### (b) 绘图展示预测值、95%预测区间、真实值，解释结果
+```{r 4b, results='hold'}
+autoplot(robot.pred)+
+  theme_bw()+
+  xlim(c(300,325))+
+  geom_point(aes(x=time(robot.pred$mean),y=robot.pred$mean))+
+  geom_point(aes(x=time(robot.outer),y=robot.outer),
+             shape=3,color='darkgreen')+
+  geom_point(aes(x=time(robot.inner),y=robot.inner),
+             shape=21)
+```
+
+#### (c) 用ARMA(1,1)再次进行预测并比较两个模型的结果
+```{r 4c, results='hold'}
+fit.arima <- TSA::arima(robot.inner, order = c(1,0,1), 
+                        include.mean = TRUE, method="ML")
+robot.pred.arima <- forecast(model = fit.arima, robot.inner, h=3)
+
+robot.pred.arima$mean
+robot.pred.arima$lower[1]
+robot.pred.arima$upper[1]
+
+autoplot(robot.pred.arima)+
+  theme_bw()+
+  xlim(c(300,325))+
+  geom_point(aes(x=time(robot.pred.arima$mean),y=robot.pred.arima$mean))+
+  geom_point(aes(x=time(robot.outer),y=robot.outer),
+             shape=3,color='darkgreen')+
+  geom_point(aes(x=time(robot.inner),y=robot.inner),
+             shape=21)
+```
+
+
+### 第八题
+
+#### (a) 绘制原始时序图和对数时序图，说明对数变换的恰当性
+
+```{r 8a, results='hold'}
+rm(list=ls())
+data("AirPassengers")
+plot(AirPassengers,type='o',main="")
+plot(log(AirPassengers),type='o',main="")
+```
+
+#### (b) 绘制并解释对数差分序列的时序图
+
+```{r 8b, results='hold'}
+plot(diff(log(AirPassengers)),type='o',main='')
+```
+
+#### (c) 绘制并解释对数序列经一次差分和一次季节差分后的时序图;
+
+```{r 8c, results='hold'}
+plot(diff(diff(log(AirPassengers)),lag=12),type='o',
+     ylab='seasonal diff & diff log (AirPassengers)')
+```
+
+
+
+#### (d) 计算并解释对数序列经一次差分和一次季节差分后的样本 ACF
+
+```{r 8d, results='hold'}
+acf(diff(diff(log(AirPassengers)),lag=12),main="",lag.max = 120)
+```
+
+#### (e) 用 “航线模型” ARIMA (0, 1, 1) × (0, 1, 1)12 拟合对数序列
+```{r 8e, results='hold'}
+fit.air <- arima(log(AirPassengers), 
+                 order = c(0,1,1), 
+                 seasonal = list(order=c(0,1,1), period = 12),
+                 method = "ML", include.mean = TRUE)
+fit.air
+```
+
+#### (f) 基于残差序列对拟合模型进行诊断，包括诊断残差的自相关性和正态性;
+```{r 8f, results='hold'}
+res.air <- fit.air$residuals
+plot(res.air,type='o', main='residual plot')
+# relationship
+acf(res.air, lag.max = 60)
+pacf(res.air, lag.max = 60)
+
+Box.test(res.air, type="Ljung-Box", fitdf = 2, lag = 6)
+Box.test(res.air, type="Ljung-Box", fitdf = 2, lag = 12)
+Box.test(res.air, type="Ljung-Box", fitdf = 2, lag = 18)
+Box.test(res.air, type="Ljung-Box", fitdf = 2, lag = 24)
+Box.test(res.air, type="Ljung-Box", fitdf = 2, lag = 30)
+
+# normality
+qqnorm(res.air);qqline(res.air)
+shapiro.test(res.air)
+```
+
+#### (g) 假设前置时间为两年，对此序列进行预测，给出点预测和 95% 预测区间
+
+```{r 8g, results='hold'}
+air.pred <- forecast(model=fit.air, h=24, AirPassengers, level=c(95))
+autoplot(air.pred, prediction_intervals = TRUE) +
+  geom_point(aes(x = time(AirPassengers), y = AirPassengers, color = "Actual"), 
+             shape = 21) +
+  geom_point(aes(x = time(air.pred$mean), y = air.pred$mean, color = "Forecast"), 
+             shape = 2) +
+  scale_color_manual(values = c("Actual" = "black", "Forecast" = "blue")) +
+  theme_bw()
+
+air.pred$mean
+air.pred$lower[,2]
+air.pred$upper[,2]
 ```
