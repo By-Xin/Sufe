@@ -2,7 +2,9 @@
 title: "时间序列分析 第四次作业"
 author: "辛柏嬴 2020111753"
 date: "2023-04-29"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -428,6 +430,6 @@ autoplot(air.pred, prediction_intervals = TRUE) +
   theme_bw()
 
 air.pred$mean
-air.pred$lower[,2]
-air.pred$upper[,2]
+air.pred$lower
+air.pred$upper
 ```
