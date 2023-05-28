@@ -19,7 +19,7 @@ Maybe there will also be a website storing my lecture notes, but let's just wait
 
 ## Hi There～
 
-❗️ **Do not forget to go to *[Wiki](https://github.com/By-Xin/Sufe/wiki)* to find out more!**
+❗️ **Try *[Wiki](https://github.com/By-Xin/Sufe/wiki)* to find out more!**
 
 
 
