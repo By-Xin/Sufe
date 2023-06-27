@@ -1,6 +1,6 @@
 
 ***Personal Webpage On the Way:***
-[ByX](https://by-xin.github.io/)
+COME AND CHECK!: [ByX](https://by-xin.github.io/)
 
 
 
