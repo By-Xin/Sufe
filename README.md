@@ -1,6 +1,6 @@
 
-***SHORTCUT:***
-[Quick Link to Mult-Stat-Anal Notes](https://github.com/By-Xin/Sufe/tree/6d1af4920defb6b637abc55567a55e427ebea96c/Multivariate-Stat-Analysis/Notes)
+***Personal Webpage On the Way:***
+[ByX](https://by-xin.github.io/)
 
 
 
